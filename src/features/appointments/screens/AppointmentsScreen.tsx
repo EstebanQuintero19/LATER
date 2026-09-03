@@ -40,10 +40,10 @@ export function AppointmentsScreen() {
   const cancel = useCancelAppointment();
 
   const confirmCancel = (id: string, title: string) => {
-    Alert.alert(title, '¿Cancelar esta cita?', [
-      { text: 'No', style: 'cancel' },
+    Alert.alert(title, strings.appointments.cancelPrompt, [
+      { text: strings.appointments.keep, style: 'cancel' },
       {
-        text: strings.common.save,
+        text: strings.appointments.cancelConfirm,
         style: 'destructive',
         onPress: () => cancel.mutate(id),
       },
@@ -76,7 +76,7 @@ export function AppointmentsScreen() {
               </Row>
               {item.status !== 'cancelled' && (
                 <Button
-                  title={strings.appointments.statusCancelled}
+                  title={strings.appointments.cancel}
                   variant="ghost"
                   onPress={() => confirmCancel(item.id, item.title)}
                   loading={cancel.isPending && cancel.variables === item.id}
