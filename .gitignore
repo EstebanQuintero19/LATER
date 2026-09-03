@@ -39,3 +39,21 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# AI / agent tooling (Claude, agents, assistants) — not tracked
+.claude/
+.claude-*/
+.cursor/
+.aider*
+.github/copilot-*
+CLAUDE.md
+CLAUDE.local.md
+AGENTS.md
+AGENT.md
+**/*.claude.*
+**/*claude*.md
+**/*claude*.txt
+**/*[Aa]gents*.md
+.ai/
+*.ai.md
+forClaude.txt

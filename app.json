@@ -1,15 +1,18 @@
 {
   "expo": {
-    "name": "RiverApp",
-    "slug": "RiverApp",
+    "name": "River",
+    "slug": "river-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "river",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.river.app"
     },
     "android": {
+      "package": "com.river.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -20,6 +23,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": ["expo-secure-store", "expo-font"],
+    "extra": {
+      "apiBaseUrl": "https://api.river.example",
+      "useMockApi": true,
+      "mockLatencyMs": 350
     }
   }
 }
