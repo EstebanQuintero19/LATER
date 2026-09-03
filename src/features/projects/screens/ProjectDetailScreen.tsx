@@ -11,6 +11,7 @@ import {
   Text,
   Thumbnail,
   colors,
+  dummyImage,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
@@ -33,10 +34,11 @@ export function ProjectDetailScreen({
         {project ? (
           <View style={styles.container}>
             <Thumbnail
+              image={dummyImage(project.id, 960, 540)}
               color={project.coverColor}
               label={project.name}
               size="hero"
-              height={140}
+              height={168}
             />
             <View style={styles.headings}>
               <Text variant="title">{project.name}</Text>

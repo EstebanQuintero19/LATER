@@ -73,7 +73,7 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    borderRadius: radii.pill,
+    borderRadius: radii.sm,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -109,8 +109,8 @@ const variantStyles: Record<
   },
   ghost: {
     container: { backgroundColor: 'transparent' },
-    label: colors.primary,
-    spinner: colors.primary,
+    label: colors.accent,
+    spinner: colors.accent,
   },
   danger: {
     container: { backgroundColor: colors.danger },

@@ -6,6 +6,7 @@ import {
   Input,
   QueryStateView,
   Screen,
+  pageGutter,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
@@ -67,10 +68,15 @@ export function CatalogScreen({
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.sm,
+    paddingHorizontal: pageGutter,
+    paddingTop: spacing.md,
     paddingBottom: spacing.md,
     gap: spacing.md,
   },
-  list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
+  list: {
+    paddingHorizontal: pageGutter,
+    paddingVertical: spacing.lg,
+    gap: spacing.md,
+    flexGrow: 1,
+  },
 });

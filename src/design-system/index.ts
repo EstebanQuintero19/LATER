@@ -10,11 +10,14 @@ export { Text } from './components/Text';
 export { Thumbnail } from './components/Thumbnail';
 export {
   colors,
+  dummyImage,
   fonts,
+  pageGutter,
   radii,
   spacing,
   swatches,
   theme,
   typography,
+  webCanvasMaxWidth,
 } from './tokens';
 export type { Theme, TypographyVariant } from './tokens';

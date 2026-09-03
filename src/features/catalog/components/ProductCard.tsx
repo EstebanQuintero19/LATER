@@ -9,6 +9,7 @@ import {
   Text,
   Thumbnail,
   colors,
+  dummyImage,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
@@ -49,6 +50,7 @@ export function ProductCard({
       >
         <Row align="flex-start" gap="md">
           <Thumbnail
+            image={dummyImage(product.id, 260, 260)}
             color={product.accentColor}
             icon={categoryIcon(product.category)}
             size="lg"

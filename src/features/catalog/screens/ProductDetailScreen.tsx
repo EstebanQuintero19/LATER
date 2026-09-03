@@ -9,6 +9,7 @@ import {
   Screen,
   Text,
   Thumbnail,
+  dummyImage,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
@@ -36,10 +37,11 @@ export function ProductDetailScreen({
         {product ? (
           <View style={styles.container}>
             <Thumbnail
+              image={dummyImage(product.id, 1040, 720)}
               color={product.accentColor}
               icon={categoryIcon(product.category)}
               size="hero"
-              height={200}
+              height={220}
             />
 
             <View style={styles.headings}>

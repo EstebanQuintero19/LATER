@@ -4,77 +4,86 @@
  * Punto único de verdad para color, espaciado, tipografía y radios.
  * Las pantallas y componentes NO deben usar valores mágicos: siempre `theme.*`.
  *
- * Estética "casa cálida / editorial": neutros arena, acento terracota y verde
- * salvia, titulares en serif (Fraunces) y texto de interfaz en Manrope.
+ * Estética "interiorismo / arquitectura": lienzo lino, superficies porcelana,
+ * un único acento camello y tinta espresso. Tono sobre tono, sin tarjeta blanca
+ * sobre gris; titulares en serif (Fraunces), interfaz en Manrope, esquinas
+ * poco redondeadas.
  */
 
 const palette = {
-  // Neutros cálidos
-  paper: '#F4F1EA',
-  paperRaised: '#FBFAF6',
-  sand: '#EFE9DE',
-  clayBorder: '#E5DFD2',
-  ink: '#2B2621',
-  inkSoft: '#6D6459',
-  inkMuted: '#A69C8C',
+  // Paleta base (4 neutros cálidos dados) + derivados imprescindibles.
+  porcelain: '#F9F8F6', // el más claro
+  linen: '#EFE9E3', // lienzo de página
+  clay: '#D9CFC7', // separadores / bordes
+  camel: '#C9B59C', // acento (único color)
+
+  // Derivados de la paleta (mismas familias, distinta luminosidad).
+  linenDeep: '#E6DED5',
+  camelDeep: '#A8895E', // acento legible como texto (~4.5:1 sobre porcelana)
+  camelTint: '#E4D9C9',
+
+  // Tinta espresso cálida (la paleta no aporta oscuros).
+  espresso: '#26221E',
+  espressoSoft: '#5F564C',
+  espressoMuted: '#938779',
   white: '#FFFFFF',
 
-  // Marca
-  terracotta: '#C05B3E',
-  terracottaDeep: '#9C3F26',
-  terracottaSoft: '#F0DDD3',
-  sage: '#5C7F6B',
-  sageSoft: '#DEE7DE',
-
-  // Semánticos (afinados a la paleta)
-  green: '#4B7F52',
-  greenSoft: '#DCE8D8',
-  ochre: '#C4882F',
-  ochreSoft: '#F2E4C9',
-  ochreInk: '#875B1D',
-  rust: '#B4463C',
-  rustSoft: '#F0D9D4',
+  // Semánticos terrosos, desaturados para convivir con los neutros.
+  moss: '#5B7355',
+  mossSoft: '#E1E5D8',
+  amber: '#A9803B',
+  amberSoft: '#EFE3CC',
+  amberInk: '#6E5322',
+  brick: '#9B4A3B',
+  brickSoft: '#ECD9D2',
 } as const;
 
 export const colors = {
-  background: palette.paper,
-  backgroundRaised: palette.paperRaised,
-  surface: palette.white,
-  surfaceMuted: palette.sand,
-  border: palette.clayBorder,
+  background: palette.linen,
+  backgroundRaised: '#F3EEE9',
+  surface: palette.porcelain,
+  surfaceMuted: palette.linenDeep,
+  border: palette.clay,
+  borderAccent: palette.camel,
 
-  primary: palette.terracotta,
-  primaryStrong: palette.terracottaDeep,
-  primarySoft: palette.terracottaSoft,
-  onPrimary: '#FFF7F2',
+  primary: palette.espresso,
+  primaryStrong: palette.espresso,
+  primarySoft: palette.camelTint,
+  onPrimary: palette.porcelain,
 
-  accent: palette.sage,
-  accentSoft: palette.sageSoft,
+  accent: palette.camelDeep,
+  accentSoft: palette.camelTint,
 
-  textPrimary: palette.ink,
-  textSecondary: palette.inkSoft,
-  textMuted: palette.inkMuted,
+  textPrimary: palette.espresso,
+  textSecondary: palette.espressoSoft,
+  textMuted: palette.espressoMuted,
 
-  success: palette.green,
-  successSoft: palette.greenSoft,
-  warning: palette.ochre,
-  warningSoft: palette.ochreSoft,
-  warningInk: palette.ochreInk,
-  danger: palette.rust,
-  dangerSoft: palette.rustSoft,
+  success: palette.moss,
+  successSoft: palette.mossSoft,
+  warning: palette.amber,
+  warningSoft: palette.amberSoft,
+  warningInk: palette.amberInk,
+  danger: palette.brick,
+  dangerSoft: palette.brickSoft,
 
-  focusRing: '#C9A895',
+  focusRing: palette.camel,
 } as const;
 
-/** Colores decorativos para las miniaturas/portadas (proyectos y productos). */
+/** Tintes tonales para fallbacks decorativos (cuando no hay imagen). */
 export const swatches = [
-  '#C05B3E', // terracota
-  '#5C7F6B', // salvia
-  '#C4882F', // ocre
-  '#3F5E58', // verde azulado profundo
-  '#8C7A67', // topo
-  '#A9552F', // teja
+  '#C9B59C',
+  '#D9CFC7',
+  '#B8A78E',
+  '#A8895E',
+  '#8C7A67',
+  '#6F6353',
 ] as const;
+
+/** URL de imagen dummy estable a partir de una semilla (proyectos, productos…). */
+export function dummyImage(seed: string, width: number, height: number): string {
+  const s = encodeURIComponent(seed);
+  return `https://picsum.photos/seed/river-${s}/${width}/${height}?grayscale`;
+}
 
 export const spacing = {
   xs: 4,
@@ -86,11 +95,17 @@ export const spacing = {
   xxxl: 48,
 } as const;
 
+/** Margen horizontal de página (gutter). Más generoso que en un layout genérico. */
+export const pageGutter = spacing.xl;
+
+/** Ancho máximo del lienzo en web: la app vive como una columna con márgenes. */
+export const webCanvasMaxWidth = 460;
+
 export const radii = {
-  sm: 8,
-  md: 12,
-  lg: 18,
-  xl: 26,
+  sm: 4,
+  md: 8,
+  lg: 12,
+  xl: 18,
   pill: 999,
 } as const;
 
@@ -111,9 +126,9 @@ export const fonts = {
 export const typography = {
   display: {
     fontFamily: fonts.serifBold,
-    fontSize: 27,
-    lineHeight: 33,
-    letterSpacing: -0.4,
+    fontSize: 28,
+    lineHeight: 34,
+    letterSpacing: -0.6,
   },
   title: {
     fontFamily: fonts.serifSemiBold,
@@ -141,7 +156,7 @@ export const typography = {
     fontFamily: fonts.sansSemiBold,
     fontSize: 12,
     lineHeight: 16,
-    letterSpacing: 0.7,
+    letterSpacing: 1.4,
     textTransform: 'uppercase' as const,
   },
   caption: {

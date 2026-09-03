@@ -1,6 +1,12 @@
 import { FlatList, RefreshControl, StyleSheet } from 'react-native';
 
-import { EmptyState, QueryStateView, Screen, spacing } from '@/design-system';
+import {
+  EmptyState,
+  QueryStateView,
+  Screen,
+  pageGutter,
+  spacing,
+} from '@/design-system';
 import { strings } from '@/i18n';
 import type { ProjectsStackScreenProps } from '@/app/navigation/types';
 
@@ -45,5 +51,10 @@ export function ProjectsScreen({
 }
 
 const styles = StyleSheet.create({
-  list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
+  list: {
+    paddingHorizontal: pageGutter,
+    paddingVertical: spacing.lg,
+    gap: spacing.md,
+    flexGrow: 1,
+  },
 });

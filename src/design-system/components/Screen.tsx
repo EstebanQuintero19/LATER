@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { ScrollView, StyleSheet, View, ViewStyle } from 'react-native';
 import { Edge, SafeAreaView } from 'react-native-safe-area-context';
 
-import { colors, spacing } from '../tokens';
+import { colors, pageGutter, spacing } from '../tokens';
 
 export interface ScreenProps {
   children: ReactNode;
@@ -13,8 +13,8 @@ export interface ScreenProps {
 }
 
 /**
- * Contenedor base de pantalla: aplica safe-area, fondo del tema y padding
- * horizontal consistente. Todas las pantallas de features lo usan.
+ * Contenedor base de pantalla: safe-area, fondo del tema y un gutter horizontal
+ * generoso (márgenes de página). Todas las pantallas de features lo usan.
  */
 export function Screen({
   children,
@@ -44,6 +44,6 @@ export function Screen({
 const styles = StyleSheet.create({
   safe: { flex: 1, backgroundColor: colors.background },
   flex: { flex: 1 },
-  scrollContent: { flexGrow: 1, paddingVertical: spacing.lg },
-  padded: { paddingHorizontal: spacing.lg },
+  scrollContent: { flexGrow: 1, paddingVertical: spacing.xl },
+  padded: { paddingHorizontal: pageGutter },
 });

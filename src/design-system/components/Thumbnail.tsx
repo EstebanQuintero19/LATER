@@ -1,18 +1,18 @@
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
-import { fonts, radii } from '../tokens';
+import { colors, fonts, radii } from '../tokens';
 import { Text } from './Text';
 
 type Size = 'sm' | 'md' | 'lg' | 'hero';
 
 const DIMENSIONS: Record<Size, { box: number; radius: number; font: number }> =
   {
-    sm: { box: 44, radius: radii.md, font: 16 },
-    md: { box: 60, radius: radii.md, font: 20 },
-    lg: { box: 76, radius: radii.lg, font: 26 },
-    hero: { box: 0, radius: radii.xl, font: 40 },
+    sm: { box: 44, radius: radii.sm, font: 16 },
+    md: { box: 64, radius: radii.sm, font: 20 },
+    lg: { box: 84, radius: radii.md, font: 26 },
+    hero: { box: 0, radius: radii.md, font: 40 },
   };
 
 function shade(hex: string, amount: number): string {
@@ -25,19 +25,26 @@ function shade(hex: string, amount: number): string {
 }
 
 export interface ThumbnailProps {
-  color: string;
-  /** Inicial mostrada en el centro (por defecto). */
+  /** URL de imagen (dummy). Si falta, se pinta un degradado tonal. */
+  image?: string;
+  /** Color del degradado de reserva. */
+  color?: string;
+  /** Inicial mostrada en el centro (sólo sin imagen). */
   label?: string;
-  /** Icono de Ionicons en lugar de la inicial. */
+  /** Icono de Ionicons en lugar de la inicial (sólo sin imagen). */
   icon?: keyof typeof Ionicons.glyphMap;
   size?: Size;
   /** `hero` ocupa todo el ancho disponible con altura fija. */
   height?: number;
 }
 
-/** Miniatura decorativa con degradado cálido: portadas de proyectos y productos. */
+/**
+ * Portada de proyectos y productos: imagen con velo cálido y filete fino.
+ * Sin imagen, degrada a un bloque tonal con inicial o icono.
+ */
 export function Thumbnail({
-  color,
+  image,
+  color = colors.borderAccent,
   label,
   icon,
   size = 'md',
@@ -48,27 +55,41 @@ export function Thumbnail({
   const boxStyle = isHero
     ? {
         width: '100%' as const,
-        height: height ?? 160,
+        height: height ?? 180,
         borderRadius: dim.radius,
       }
     : { width: dim.box, height: dim.box, borderRadius: dim.radius };
 
+  if (image) {
+    return (
+      <View style={[styles.base, styles.framed, boxStyle]}>
+        <Image
+          source={{ uri: image }}
+          style={styles.fill}
+          resizeMode="cover"
+          accessibilityIgnoresInvertColors
+        />
+        {/* Velo camello: unifica las fotos con la paleta. */}
+        <View style={styles.veil} />
+      </View>
+    );
+  }
+
   return (
     <LinearGradient
-      colors={[shade(color, 26), color, shade(color, -22)]}
+      colors={[shade(color, 20), color, shade(color, -20)]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      style={[styles.base, boxStyle]}
+      style={[styles.base, styles.framed, boxStyle]}
     >
-      <View style={styles.sheen} />
       {icon ? (
-        <Ionicons name={icon} size={dim.font} color="rgba(255,255,255,0.92)" />
+        <Ionicons name={icon} size={dim.font} color="rgba(38,34,30,0.55)" />
       ) : label ? (
         <Text
           style={{
             fontFamily: fonts.serifSemiBold,
             fontSize: dim.font,
-            color: 'rgba(255,255,255,0.95)',
+            color: 'rgba(38,34,30,0.55)',
           }}
         >
           {label.charAt(0).toUpperCase()}
@@ -80,13 +101,14 @@ export function Thumbnail({
 
 const styles = StyleSheet.create({
   base: { alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
-  sheen: {
+  framed: { borderWidth: 1, borderColor: colors.border },
+  fill: { width: '100%', height: '100%' },
+  veil: {
     position: 'absolute',
-    top: -20,
-    left: -20,
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'rgba(255,255,255,0.12)',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(201,181,156,0.16)',
   },
 });

@@ -46,7 +46,7 @@ export function LoginScreen() {
   return (
     <Screen scroll contentStyle={styles.content}>
       <View style={styles.header}>
-        <Thumbnail color={colors.primary} icon="home" size="lg" />
+        <Thumbnail color={colors.borderAccent} icon="home" size="lg" />
         <View style={styles.brandLine}>
           <Text style={styles.wordmark}>River</Text>
           <View style={styles.dot} />

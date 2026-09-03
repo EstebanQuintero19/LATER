@@ -1,6 +1,14 @@
 import { StyleSheet, View } from 'react-native';
 
-import { Badge, Card, Row, Text, Thumbnail, spacing } from '@/design-system';
+import {
+  Badge,
+  Card,
+  Row,
+  Text,
+  Thumbnail,
+  dummyImage,
+  spacing,
+} from '@/design-system';
 import { strings } from '@/i18n';
 import { formatRelative } from '@/utils/format';
 
@@ -26,7 +34,12 @@ export function ProjectCard({
   return (
     <Card onPress={onPress}>
       <Row align="flex-start" gap="md">
-        <Thumbnail color={project.coverColor} label={project.name} size="md" />
+        <Thumbnail
+          image={dummyImage(project.id, 220, 220)}
+          color={project.coverColor}
+          label={project.name}
+          size="md"
+        />
         <View style={styles.body}>
           <Text variant="subtitle" numberOfLines={1}>
             {project.name}

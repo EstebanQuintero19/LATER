@@ -37,8 +37,8 @@ const toneFg: Record<Tone, string> = {
 const styles = StyleSheet.create({
   badge: {
     alignSelf: 'flex-start',
-    borderRadius: radii.pill,
-    paddingHorizontal: spacing.md,
+    borderRadius: radii.sm,
+    paddingHorizontal: spacing.sm,
     paddingVertical: 3,
   },
   text: {

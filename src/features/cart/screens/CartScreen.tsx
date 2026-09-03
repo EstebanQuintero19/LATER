@@ -9,6 +9,8 @@ import {
   Text,
   Thumbnail,
   colors,
+  dummyImage,
+  pageGutter,
   radii,
   spacing,
 } from '@/design-system';
@@ -63,7 +65,12 @@ function CartRow({
   return (
     <Card>
       <Row align="flex-start" gap="md">
-        <Thumbnail color={line.accentColor} icon={categoryIcon('')} size="md" />
+        <Thumbnail
+          image={dummyImage(line.productId, 180, 180)}
+          color={line.accentColor}
+          icon={categoryIcon('')}
+          size="md"
+        />
         <View style={styles.body}>
           <Text variant="subtitle" numberOfLines={2}>
             {line.name}
@@ -156,7 +163,11 @@ export function CartScreen() {
 }
 
 const styles = StyleSheet.create({
-  list: { padding: spacing.lg, gap: spacing.md },
+  list: {
+    paddingHorizontal: pageGutter,
+    paddingVertical: spacing.lg,
+    gap: spacing.md,
+  },
   body: { flex: 1, gap: 4 },
   controls: { marginTop: spacing.sm },
   remove: {
@@ -182,7 +193,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.backgroundRaised,
     borderTopWidth: 1,
     borderTopColor: colors.border,
-    padding: spacing.lg,
+    paddingHorizontal: pageGutter,
+    paddingVertical: spacing.lg,
     gap: spacing.md,
   },
   summaryRow: {},

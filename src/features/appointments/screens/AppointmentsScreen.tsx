@@ -17,6 +17,7 @@ import {
   Screen,
   Text,
   colors,
+  pageGutter,
   radii,
   spacing,
 } from '@/design-system';
@@ -136,7 +137,12 @@ export function AppointmentsScreen() {
 }
 
 const styles = StyleSheet.create({
-  list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
+  list: {
+    paddingHorizontal: pageGutter,
+    paddingVertical: spacing.lg,
+    gap: spacing.md,
+    flexGrow: 1,
+  },
   iconWrap: {
     width: 40,
     height: 40,

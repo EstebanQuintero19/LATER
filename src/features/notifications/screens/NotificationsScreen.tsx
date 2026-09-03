@@ -16,6 +16,7 @@ import {
   Screen,
   Text,
   colors,
+  pageGutter,
   radii,
   spacing,
 } from '@/design-system';
@@ -122,10 +123,15 @@ export function NotificationsScreen() {
 
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: pageGutter,
     paddingTop: spacing.sm,
   },
-  list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
+  list: {
+    paddingHorizontal: pageGutter,
+    paddingVertical: spacing.lg,
+    gap: spacing.md,
+    flexGrow: 1,
+  },
   unread: {
     borderColor: colors.primarySoft,
     backgroundColor: colors.backgroundRaised,
