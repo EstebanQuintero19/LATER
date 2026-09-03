@@ -8,6 +8,7 @@ import {
   Row,
   Screen,
   Text,
+  Thumbnail,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
@@ -15,6 +16,7 @@ import { formatCurrency } from '@/utils/format';
 import { useCart, useCartQuantity } from '@/features/cart/hooks/useCart';
 import type { CatalogStackScreenProps } from '@/app/navigation/types';
 
+import { categoryIcon } from '../components/ProductCard';
 import { useNativePreview } from '../hooks/useNativePreview';
 import { useProduct } from '../hooks/useCatalog';
 import { isInStock } from '../types';
@@ -33,29 +35,35 @@ export function ProductDetailScreen({
       <QueryStateView loading={isLoading} error={error} onRetry={refetch}>
         {product ? (
           <View style={styles.container}>
-            <View
-              style={[styles.hero, { backgroundColor: product.accentColor }]}
+            <Thumbnail
+              color={product.accentColor}
+              icon={categoryIcon(product.category)}
+              size="hero"
+              height={200}
             />
-            <Text variant="caption" color="textMuted">
-              {product.category}
-            </Text>
-            <Text variant="title">{product.name}</Text>
-            <Text variant="display" color="primaryStrong">
-              {formatCurrency(product.price, product.currency)}
-            </Text>
-            <Badge
-              label={
-                isInStock(product)
-                  ? `${strings.catalog.inStock} · ${product.stock}`
-                  : strings.catalog.outOfStock
-              }
-              tone={isInStock(product) ? 'success' : 'danger'}
-            />
+
+            <View style={styles.headings}>
+              <Text variant="label" color="textMuted">
+                {product.category}
+              </Text>
+              <Text variant="title">{product.name}</Text>
+              <Text variant="display" color="primaryStrong">
+                {formatCurrency(product.price, product.currency)}
+              </Text>
+              <Badge
+                label={
+                  isInStock(product)
+                    ? `${strings.catalog.inStock} · ${product.stock}`
+                    : strings.catalog.outOfStock
+                }
+                tone={isInStock(product) ? 'success' : 'danger'}
+              />
+            </View>
 
             <Button
               title={
                 inCart > 0
-                  ? `${strings.catalog.added} (${inCart})`
+                  ? `${strings.catalog.added} · ${inCart}`
                   : strings.catalog.addToCart
               }
               variant={inCart > 0 ? 'secondary' : 'primary'}
@@ -68,7 +76,7 @@ export function ProductDetailScreen({
             {(product.supports3dScan || product.supportsAr) && (
               <Card>
                 <Text variant="label" color="textSecondary">
-                  Vista previa nativa (equipo iOS)
+                  Vista previa nativa · equipo iOS
                 </Text>
                 <Row gap="sm" style={styles.nativeRow} wrap>
                   {product.supports3dScan && (
@@ -98,7 +106,7 @@ export function ProductDetailScreen({
 }
 
 const styles = StyleSheet.create({
-  container: { gap: spacing.md },
-  hero: { height: 180, borderRadius: 16 },
+  container: { gap: spacing.lg },
+  headings: { gap: spacing.sm },
   nativeRow: { marginTop: spacing.sm },
 });

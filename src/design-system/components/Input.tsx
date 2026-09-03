@@ -1,7 +1,7 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 
-import { colors, radii, spacing, typography } from '../tokens';
+import { colors, fonts, radii, spacing, typography } from '../tokens';
 import { Text } from './Text';
 
 export interface InputProps extends TextInputProps {
@@ -10,10 +10,24 @@ export interface InputProps extends TextInputProps {
   hint?: string;
 }
 
+type FocusHandler = NonNullable<TextInputProps['onFocus']>;
+type BlurHandler = NonNullable<TextInputProps['onBlur']>;
+
 export const Input = forwardRef<TextInput, InputProps>(function Input(
-  { label, error, hint, style, ...rest },
+  { label, error, hint, style, onFocus, onBlur, ...rest },
   ref,
 ) {
+  const [focused, setFocused] = useState(false);
+
+  const handleFocus: FocusHandler = (e) => {
+    setFocused(true);
+    onFocus?.(e);
+  };
+  const handleBlur: BlurHandler = (e) => {
+    setFocused(false);
+    onBlur?.(e);
+  };
+
   return (
     <View style={styles.wrapper}>
       {label ? (
@@ -27,10 +41,13 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
         style={[
           styles.input,
           typography.body,
+          focused && styles.inputFocused,
           !!error && styles.inputError,
           style,
         ]}
         accessibilityLabel={label}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         {...rest}
       />
       {error ? (
@@ -51,12 +68,17 @@ const styles = StyleSheet.create({
   label: { marginLeft: spacing.xs },
   input: {
     backgroundColor: colors.surface,
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderColor: colors.border,
     borderRadius: radii.md,
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.md + 1,
     color: colors.textPrimary,
+    fontFamily: fonts.sansRegular,
+  },
+  inputFocused: {
+    borderColor: colors.primary,
+    backgroundColor: colors.backgroundRaised,
   },
   inputError: { borderColor: colors.danger },
   helper: { marginLeft: spacing.xs },

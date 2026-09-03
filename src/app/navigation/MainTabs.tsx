@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { colors } from '@/design-system';
+import { colors, fonts } from '@/design-system';
 import { strings } from '@/i18n';
 import { AppointmentsScreen } from '@/features/appointments/screens/AppointmentsScreen';
 import { CartScreen } from '@/features/cart/screens/CartScreen';
@@ -38,11 +38,27 @@ export function MainTabs() {
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
         tabBarStyle: {
-          backgroundColor: colors.surface,
+          backgroundColor: colors.backgroundRaised,
           borderTopColor: colors.border,
+          height: 64,
+          paddingTop: 6,
+          paddingBottom: 8,
         },
-        tabBarIcon: ({ color, size }) => (
-          <Ionicons name={ICONS[route.name]} size={size} color={color} />
+        tabBarLabelStyle: {
+          fontFamily: fonts.sansSemiBold,
+          fontSize: 11,
+          letterSpacing: 0.2,
+        },
+        tabBarIcon: ({ color, size, focused }) => (
+          <Ionicons
+            name={
+              focused
+                ? (ICONS[route.name].replace('-outline', '') as IoniconName)
+                : ICONS[route.name]
+            }
+            size={size}
+            color={color}
+          />
         ),
       })}
     >
@@ -81,6 +97,7 @@ export function MainTabs() {
         options={{
           ...tabHeaderOptions,
           title: strings.tabs.notifications,
+          tabBarLabel: 'Avisos',
           headerRight: () => <SignOutButton />,
           tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
         }}

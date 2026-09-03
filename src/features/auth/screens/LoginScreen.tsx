@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { Button, Input, Screen, Text, spacing } from '@/design-system';
+import {
+  Button,
+  Input,
+  Screen,
+  Text,
+  Thumbnail,
+  colors,
+  fonts,
+  spacing,
+} from '@/design-system';
 import { strings } from '@/i18n';
 
 import { useSession } from '../hooks/useSession';
@@ -37,12 +46,15 @@ export function LoginScreen() {
   return (
     <Screen scroll contentStyle={styles.content}>
       <View style={styles.header}>
-        <Image
-          source={require('../../../../assets/icon.png')}
-          style={styles.logo}
-        />
-        <Text variant="display">{strings.auth.title}</Text>
-        <Text variant="body" color="textSecondary">
+        <Thumbnail color={colors.primary} icon="home" size="lg" />
+        <View style={styles.brandLine}>
+          <Text style={styles.wordmark}>River</Text>
+          <View style={styles.dot} />
+        </View>
+        <Text variant="display" style={styles.title}>
+          {strings.auth.title}
+        </Text>
+        <Text variant="body" color="textSecondary" center>
           {strings.auth.subtitle}
         </Text>
       </View>
@@ -97,6 +109,25 @@ export function LoginScreen() {
 const styles = StyleSheet.create({
   content: { flexGrow: 1, justifyContent: 'center', gap: spacing.xxl },
   header: { alignItems: 'center', gap: spacing.sm },
-  logo: { width: 64, height: 64, borderRadius: 16, marginBottom: spacing.sm },
+  brandLine: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: 3,
+    marginTop: spacing.xs,
+  },
+  wordmark: {
+    fontFamily: fonts.serifBold,
+    fontSize: 26,
+    letterSpacing: -0.5,
+    color: colors.textPrimary,
+  },
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: colors.primary,
+    marginBottom: 6,
+  },
+  title: { marginTop: spacing.sm },
   form: { gap: spacing.lg },
 });

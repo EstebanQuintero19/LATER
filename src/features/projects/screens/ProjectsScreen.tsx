@@ -33,6 +33,7 @@ export function ProjectsScreen({
           )}
           ListEmptyComponent={
             <EmptyState
+              icon="briefcase-outline"
               title={strings.projects.empty}
               description={strings.projects.emptyHint}
             />

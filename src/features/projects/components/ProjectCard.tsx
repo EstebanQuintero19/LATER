@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import { Badge, Card, Row, Text, spacing } from '@/design-system';
+import { Badge, Card, Row, Text, Thumbnail, spacing } from '@/design-system';
 import { strings } from '@/i18n';
 import { formatRelative } from '@/utils/format';
 
@@ -26,9 +26,7 @@ export function ProjectCard({
   return (
     <Card onPress={onPress}>
       <Row align="flex-start" gap="md">
-        <View
-          style={[styles.stripe, { backgroundColor: project.coverColor }]}
-        />
+        <Thumbnail color={project.coverColor} label={project.name} size="md" />
         <View style={styles.body}>
           <Text variant="subtitle" numberOfLines={1}>
             {project.name}
@@ -36,16 +34,16 @@ export function ProjectCard({
           <Text variant="body" color="textSecondary" numberOfLines={1}>
             {project.client}
           </Text>
-          <Row justify="space-between" style={styles.meta}>
+          <View style={styles.meta}>
             <Badge
               label={PROJECT_STATUS_LABEL[project.status]}
               tone={STATUS_TONE[project.status]}
             />
-            <Text variant="caption" color="textMuted">
+            <Text variant="caption" color="textMuted" style={styles.metaText}>
               {project.memberCount} {strings.projects.members} ·{' '}
               {formatRelative(project.updatedAt)}
             </Text>
-          </Row>
+          </View>
         </View>
       </Row>
     </Card>
@@ -53,7 +51,7 @@ export function ProjectCard({
 }
 
 const styles = StyleSheet.create({
-  stripe: { width: 4, alignSelf: 'stretch', borderRadius: 2 },
-  body: { flex: 1, gap: spacing.xs },
-  meta: { marginTop: spacing.sm },
+  body: { flex: 1, gap: 3 },
+  meta: { marginTop: spacing.sm, gap: spacing.xs, alignItems: 'flex-start' },
+  metaText: { marginTop: 2 },
 });

@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import {
   Alert,
   FlatList,
@@ -15,6 +16,8 @@ import {
   Row,
   Screen,
   Text,
+  colors,
+  radii,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
@@ -60,33 +63,68 @@ export function AppointmentsScreen() {
           refreshControl={
             <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
           }
-          renderItem={({ item }) => (
-            <Card>
-              <Row justify="space-between" align="flex-start">
-                <View style={styles.body}>
-                  <Text variant="subtitle">{item.title}</Text>
-                  <Text variant="body" color="textSecondary">
-                    {item.projectName}
-                  </Text>
-                  <Text variant="caption" color="textMuted">
-                    {formatDateTime(item.scheduledAt)} · {item.location}
-                  </Text>
-                </View>
-                <Badge {...STATUS[item.status]} />
-              </Row>
-              {item.status !== 'cancelled' && (
-                <Button
-                  title={strings.appointments.cancel}
-                  variant="ghost"
-                  onPress={() => confirmCancel(item.id, item.title)}
-                  loading={cancel.isPending && cancel.variables === item.id}
-                  style={styles.action}
-                />
-              )}
-            </Card>
-          )}
+          renderItem={({ item }) => {
+            const cancelled = item.status === 'cancelled';
+            return (
+              <Card>
+                <Row align="flex-start" gap="md">
+                  <View style={styles.iconWrap}>
+                    <Ionicons
+                      name={cancelled ? 'close' : 'calendar-clear-outline'}
+                      size={20}
+                      color={cancelled ? colors.textMuted : colors.primary}
+                    />
+                  </View>
+                  <View style={styles.body}>
+                    <Row justify="space-between" align="flex-start">
+                      <Text variant="subtitle" style={styles.title}>
+                        {item.title}
+                      </Text>
+                      <Badge {...STATUS[item.status]} />
+                    </Row>
+                    <Text variant="body" color="textSecondary">
+                      {item.projectName}
+                    </Text>
+                    <Row gap="xs" style={styles.metaRow}>
+                      <Ionicons
+                        name="time-outline"
+                        size={13}
+                        color={colors.textMuted}
+                      />
+                      <Text variant="caption" color="textMuted">
+                        {formatDateTime(item.scheduledAt)}
+                      </Text>
+                    </Row>
+                    <Row gap="xs">
+                      <Ionicons
+                        name="location-outline"
+                        size={13}
+                        color={colors.textMuted}
+                      />
+                      <Text variant="caption" color="textMuted">
+                        {item.location}
+                      </Text>
+                    </Row>
+                  </View>
+                </Row>
+                {!cancelled && (
+                  <>
+                    <View style={styles.divider} />
+                    <Button
+                      title={strings.appointments.cancel}
+                      variant="ghost"
+                      onPress={() => confirmCancel(item.id, item.title)}
+                      loading={cancel.isPending && cancel.variables === item.id}
+                      style={styles.action}
+                    />
+                  </>
+                )}
+              </Card>
+            );
+          }}
           ListEmptyComponent={
             <EmptyState
+              icon="calendar-outline"
               title={strings.appointments.empty}
               description={strings.appointments.emptyHint}
             />
@@ -99,6 +137,21 @@ export function AppointmentsScreen() {
 
 const styles = StyleSheet.create({
   list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
-  body: { flex: 1, gap: spacing.xs },
-  action: { marginTop: spacing.sm, alignSelf: 'flex-start' },
+  iconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: radii.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primarySoft,
+  },
+  body: { flex: 1, gap: 4 },
+  title: { flex: 1, marginRight: spacing.sm },
+  metaRow: { marginTop: 2 },
+  divider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginVertical: spacing.sm,
+  },
+  action: { alignSelf: 'flex-start' },
 });

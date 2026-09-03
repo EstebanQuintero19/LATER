@@ -22,6 +22,23 @@ jest.mock('expo-constants', () => ({
   default: { expoConfig: { extra: { useMockApi: true, mockLatencyMs: 0 } } },
 }));
 
+// Los iconos y el degradado no aportan nada a los tests de lógica/interacción.
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  const Icon = (props: Record<string, unknown>) =>
+    React.createElement(View, props);
+  return new Proxy(
+    { __esModule: true },
+    { get: (target, key) => (key in target ? (target as any)[key] : Icon) },
+  );
+});
+
+jest.mock('expo-linear-gradient', () => {
+  const { View } = require('react-native');
+  return { __esModule: true, LinearGradient: View };
+});
+
 beforeEach(() => {
   resetMockDb();
 });

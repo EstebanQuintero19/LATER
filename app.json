@@ -24,7 +24,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-secure-store", "expo-font"],
+    "plugins": [
+      "expo-secure-store",
+      "expo-font",
+      "expo-splash-screen"
+    ],
     "extra": {
       "apiBaseUrl": "https://api.river.example",
       "useMockApi": true,

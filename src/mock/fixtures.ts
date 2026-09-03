@@ -29,7 +29,7 @@ export const mockProjects: ProjectDto[] = [
     status: 'in_progress',
     memberCount: 4,
     updatedAt: '2026-08-28T14:10:00.000Z',
-    coverColor: '#2A9D8F',
+    coverColor: '#5C7F6B',
   },
   {
     id: 'prj_2',
@@ -38,7 +38,7 @@ export const mockProjects: ProjectDto[] = [
     status: 'measuring',
     memberCount: 3,
     updatedAt: '2026-08-30T09:00:00.000Z',
-    coverColor: '#134074',
+    coverColor: '#3F5E58',
   },
   {
     id: 'prj_3',
@@ -47,7 +47,7 @@ export const mockProjects: ProjectDto[] = [
     status: 'quote_sent',
     memberCount: 6,
     updatedAt: '2026-09-01T18:45:00.000Z',
-    coverColor: '#E9A23B',
+    coverColor: '#C4882F',
   },
 ];
 
@@ -61,7 +61,7 @@ export const mockProducts: ProductDto[] = [
     stock: 8,
     supports3dScan: true,
     supportsAr: true,
-    accentColor: '#8DA9C4',
+    accentColor: '#8C7A67',
   },
   {
     id: 'prd_2',
@@ -72,7 +72,7 @@ export const mockProducts: ProductDto[] = [
     stock: 23,
     supports3dScan: false,
     supportsAr: true,
-    accentColor: '#616E7C',
+    accentColor: '#3F5E58',
   },
   {
     id: 'prd_3',
@@ -83,7 +83,7 @@ export const mockProducts: ProductDto[] = [
     stock: 0,
     supports3dScan: true,
     supportsAr: true,
-    accentColor: '#E9A23B',
+    accentColor: '#A9552F',
   },
   {
     id: 'prd_4',
@@ -94,7 +94,7 @@ export const mockProducts: ProductDto[] = [
     stock: 40,
     supports3dScan: false,
     supportsAr: false,
-    accentColor: '#2A9D8F',
+    accentColor: '#5C7F6B',
   },
 ];
 

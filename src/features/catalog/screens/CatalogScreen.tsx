@@ -53,6 +53,7 @@ export function CatalogScreen({
           ListEmptyComponent={
             !isFetching ? (
               <EmptyState
+                icon="search-outline"
                 title="Sin resultados"
                 description="Prueba con otro término de búsqueda."
               />

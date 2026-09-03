@@ -1,11 +1,31 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Badge, Button, Card, Row, Text, spacing } from '@/design-system';
+import {
+  Badge,
+  Button,
+  Card,
+  Row,
+  Text,
+  Thumbnail,
+  colors,
+  spacing,
+} from '@/design-system';
 import { strings } from '@/i18n';
 import { formatCurrency } from '@/utils/format';
 import { useCart, useCartQuantity } from '@/features/cart/hooks/useCart';
 
 import { Product, isInStock } from '../types';
+
+export function categoryIcon(category: string): keyof typeof Ionicons.glyphMap {
+  const map: Record<string, keyof typeof Ionicons.glyphMap> = {
+    Superficies: 'grid-outline',
+    Grifería: 'water-outline',
+    Mobiliario: 'cube-outline',
+    Iluminación: 'bulb-outline',
+  };
+  return map[category] ?? 'pricetag-outline';
+}
 
 export function ProductCard({
   product,
@@ -25,25 +45,29 @@ export function ProductCard({
         accessibilityRole="button"
         accessibilityLabel={product.name}
         onPress={onPress}
-        style={({ pressed }) => [styles.tappable, pressed && styles.pressed]}
+        style={({ pressed }) => pressed && styles.pressed}
       >
         <Row align="flex-start" gap="md">
-          <View
-            style={[styles.thumb, { backgroundColor: product.accentColor }]}
+          <Thumbnail
+            color={product.accentColor}
+            icon={categoryIcon(product.category)}
+            size="lg"
           />
           <View style={styles.body}>
+            <Text variant="label" color="textMuted">
+              {product.category}
+            </Text>
             <Text variant="subtitle" numberOfLines={2}>
               {product.name}
             </Text>
-            <Text variant="caption" color="textMuted">
-              {product.category}
-            </Text>
-            <Text variant="subtitle" color="primaryStrong" style={styles.price}>
+            <Text variant="title" color="primaryStrong" style={styles.price}>
               {formatCurrency(product.price, product.currency)}
             </Text>
           </View>
         </Row>
       </Pressable>
+
+      <View style={styles.divider} />
 
       <Row justify="space-between" style={styles.footer}>
         <Badge
@@ -55,7 +79,7 @@ export function ProductCard({
         <Button
           title={
             inCart > 0
-              ? `${strings.catalog.added} (${inCart})`
+              ? `${strings.catalog.added} · ${inCart}`
               : strings.catalog.addToCart
           }
           size="md"
@@ -69,10 +93,13 @@ export function ProductCard({
 }
 
 const styles = StyleSheet.create({
-  tappable: { borderRadius: spacing.sm },
-  pressed: { opacity: 0.7 },
-  thumb: { width: 64, height: 64, borderRadius: 12 },
-  body: { flex: 1, gap: spacing.xs },
-  price: { marginTop: spacing.xs },
-  footer: { marginTop: spacing.md },
+  pressed: { opacity: 0.75 },
+  body: { flex: 1, gap: 4 },
+  price: { marginTop: 2, fontSize: 19, lineHeight: 24 },
+  divider: {
+    height: 1,
+    backgroundColor: colors.border,
+    marginVertical: spacing.md,
+  },
+  footer: {},
 });

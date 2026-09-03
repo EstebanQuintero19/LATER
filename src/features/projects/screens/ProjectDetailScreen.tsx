@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import {
@@ -8,6 +9,8 @@ import {
   Row,
   Screen,
   Text,
+  Thumbnail,
+  colors,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
@@ -29,41 +32,42 @@ export function ProjectDetailScreen({
       <QueryStateView loading={isLoading} error={error} onRetry={refetch}>
         {project ? (
           <View style={styles.container}>
-            <View
-              style={[styles.hero, { backgroundColor: project.coverColor }]}
+            <Thumbnail
+              color={project.coverColor}
+              label={project.name}
+              size="hero"
+              height={140}
             />
-            <Text variant="title">{project.name}</Text>
-            <Text variant="body" color="textSecondary">
-              {project.client}
-            </Text>
+            <View style={styles.headings}>
+              <Text variant="title">{project.name}</Text>
+              <Text variant="body" color="textSecondary">
+                {project.client}
+              </Text>
+            </View>
 
-            <Card>
-              <Row justify="space-between">
-                <Text variant="label" color="textSecondary">
-                  Estado
-                </Text>
+            <Card padded={false}>
+              <DetailRow label="Estado">
                 <Badge
                   label={PROJECT_STATUS_LABEL[project.status]}
                   tone="primary"
                 />
-              </Row>
-              <Row justify="space-between" style={styles.cardRow}>
-                <Text variant="label" color="textSecondary">
-                  {strings.projects.members}
+              </DetailRow>
+              <View style={styles.hr} />
+              <DetailRow label={strings.projects.members}>
+                <Text variant="bodyStrong">{project.memberCount}</Text>
+              </DetailRow>
+              <View style={styles.hr} />
+              <DetailRow label="Última actualización">
+                <Text variant="bodyStrong">
+                  {formatDate(project.updatedAt)}
                 </Text>
-                <Text variant="body">{project.memberCount}</Text>
-              </Row>
-              <Row justify="space-between" style={styles.cardRow}>
-                <Text variant="label" color="textSecondary">
-                  Última actualización
-                </Text>
-                <Text variant="body">{formatDate(project.updatedAt)}</Text>
-              </Row>
+              </DetailRow>
             </Card>
 
             <Button
               title={strings.projects.openCatalog}
               variant="secondary"
+              fullWidth
               onPress={() =>
                 navigation.navigate('CatalogTab', { screen: 'CatalogList' })
               }
@@ -75,8 +79,26 @@ export function ProjectDetailScreen({
   );
 }
 
+function DetailRow({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <Row justify="space-between" style={styles.row}>
+      <Text variant="label" color="textMuted">
+        {label}
+      </Text>
+      {children}
+    </Row>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: { gap: spacing.md },
-  hero: { height: 120, borderRadius: 16 },
-  cardRow: { marginTop: spacing.md },
+  container: { gap: spacing.lg },
+  headings: { gap: spacing.xs },
+  row: { paddingVertical: spacing.md, paddingHorizontal: spacing.lg },
+  hr: { height: 1, backgroundColor: colors.border },
 });

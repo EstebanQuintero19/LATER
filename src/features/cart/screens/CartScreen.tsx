@@ -1,4 +1,4 @@
-import { Alert, FlatList, StyleSheet, View } from 'react-native';
+import { Alert, FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import {
   Button,
@@ -7,12 +7,86 @@ import {
   Row,
   Screen,
   Text,
+  Thumbnail,
+  colors,
+  radii,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
 import { formatCurrency } from '@/utils/format';
+import { categoryIcon } from '@/features/catalog/components/ProductCard';
 
+import { CartLine } from '../model/cartSlice';
 import { useCart } from '../hooks/useCart';
+
+function QtyStepper({
+  value,
+  onChange,
+}: {
+  value: number;
+  onChange: (n: number) => void;
+}) {
+  return (
+    <Row gap="xs" style={styles.stepper}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Restar"
+        onPress={() => onChange(value - 1)}
+        style={styles.stepBtn}
+      >
+        <Text style={styles.stepGlyph}>−</Text>
+      </Pressable>
+      <Text variant="bodyStrong" style={styles.stepValue}>
+        {value}
+      </Text>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="Sumar"
+        onPress={() => onChange(value + 1)}
+        style={styles.stepBtn}
+      >
+        <Text style={styles.stepGlyph}>+</Text>
+      </Pressable>
+    </Row>
+  );
+}
+
+function CartRow({
+  line,
+  onQty,
+  onRemove,
+}: {
+  line: CartLine;
+  onQty: (n: number) => void;
+  onRemove: () => void;
+}) {
+  return (
+    <Card>
+      <Row align="flex-start" gap="md">
+        <Thumbnail color={line.accentColor} icon={categoryIcon('')} size="md" />
+        <View style={styles.body}>
+          <Text variant="subtitle" numberOfLines={2}>
+            {line.name}
+          </Text>
+          <Text variant="caption" color="textMuted">
+            {formatCurrency(line.unitPrice, line.currency)} c/u
+          </Text>
+          <Row justify="space-between" style={styles.controls}>
+            <QtyStepper value={line.quantity} onChange={onQty} />
+            <Text variant="bodyStrong" color="primaryStrong">
+              {formatCurrency(line.unitPrice * line.quantity, line.currency)}
+            </Text>
+          </Row>
+        </View>
+      </Row>
+      <Pressable onPress={onRemove} style={styles.remove}>
+        <Text variant="caption" color="textMuted">
+          {strings.cart.remove}
+        </Text>
+      </Pressable>
+    </Card>
+  );
+}
 
 export function CartScreen() {
   const { lines, subtotal, isEmpty, setQuantity, remove, clear } = useCart();
@@ -21,6 +95,7 @@ export function CartScreen() {
     return (
       <Screen edges={['bottom']}>
         <EmptyState
+          icon="cart-outline"
           title={strings.cart.empty}
           description={strings.cart.emptyHint}
         />
@@ -52,52 +127,20 @@ export function CartScreen() {
         keyExtractor={(l) => l.productId}
         contentContainerStyle={styles.list}
         renderItem={({ item }) => (
-          <Card>
-            <Row align="flex-start" gap="md">
-              <View
-                style={[styles.thumb, { backgroundColor: item.accentColor }]}
-              />
-              <View style={styles.body}>
-                <Text variant="subtitle" numberOfLines={2}>
-                  {item.name}
-                </Text>
-                <Text variant="body" color="textSecondary">
-                  {formatCurrency(item.unitPrice, item.currency)}
-                </Text>
-                <Row justify="space-between" style={styles.controls}>
-                  <Row gap="sm">
-                    <Button
-                      title="−"
-                      variant="secondary"
-                      onPress={() =>
-                        setQuantity(item.productId, item.quantity - 1)
-                      }
-                    />
-                    <Text variant="subtitle">{item.quantity}</Text>
-                    <Button
-                      title="+"
-                      variant="secondary"
-                      onPress={() =>
-                        setQuantity(item.productId, item.quantity + 1)
-                      }
-                    />
-                  </Row>
-                  <Button
-                    title={strings.cart.remove}
-                    variant="ghost"
-                    onPress={() => remove(item.productId)}
-                  />
-                </Row>
-              </View>
-            </Row>
-          </Card>
+          <CartRow
+            line={item}
+            onQty={(n) => setQuantity(item.productId, n)}
+            onRemove={() => remove(item.productId)}
+          />
         )}
       />
 
-      <Card style={styles.summary} padded>
-        <Row justify="space-between">
-          <Text variant="subtitle">{strings.cart.subtotal}</Text>
-          <Text variant="subtitle" color="primaryStrong">
+      <View style={styles.summary}>
+        <Row justify="space-between" style={styles.summaryRow}>
+          <Text variant="label" color="textMuted">
+            {strings.cart.subtotal}
+          </Text>
+          <Text variant="title" color="primaryStrong">
             {formatCurrency(subtotal)}
           </Text>
         </Row>
@@ -106,22 +149,41 @@ export function CartScreen() {
           onPress={onCheckout}
           fullWidth
           size="lg"
-          style={styles.checkout}
         />
-      </Card>
+      </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
   list: { padding: spacing.lg, gap: spacing.md },
-  thumb: { width: 56, height: 56, borderRadius: 10 },
-  body: { flex: 1, gap: spacing.xs },
+  body: { flex: 1, gap: 4 },
   controls: { marginTop: spacing.sm },
+  remove: {
+    marginTop: spacing.md,
+    alignSelf: 'flex-start',
+  },
+  stepper: {
+    backgroundColor: colors.surfaceMuted,
+    borderRadius: radii.pill,
+    padding: 3,
+  },
+  stepBtn: {
+    width: 30,
+    height: 30,
+    borderRadius: radii.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surface,
+  },
+  stepGlyph: { fontSize: 16, color: colors.textPrimary, lineHeight: 18 },
+  stepValue: { minWidth: 20, textAlign: 'center' },
   summary: {
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
+    backgroundColor: colors.backgroundRaised,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    padding: spacing.lg,
     gap: spacing.md,
   },
-  checkout: { marginTop: spacing.sm },
+  summaryRow: {},
 });

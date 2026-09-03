@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import {
   FlatList,
   Pressable,
@@ -15,16 +16,25 @@ import {
   Screen,
   Text,
   colors,
+  radii,
   spacing,
 } from '@/design-system';
 import { strings } from '@/i18n';
 import { formatRelative } from '@/utils/format';
 
+import { NotificationType } from '../types';
 import {
   useMarkAllNotificationsRead,
   useMarkNotificationRead,
   useNotifications,
 } from '../hooks/useNotifications';
+
+const TYPE_ICON: Record<NotificationType, keyof typeof Ionicons.glyphMap> = {
+  appointment: 'calendar-outline',
+  quote: 'document-text-outline',
+  project: 'briefcase-outline',
+  order: 'cube-outline',
+};
 
 export function NotificationsScreen() {
   const { data, isLoading, isRefetching, error, refetch, unreadCount } =
@@ -35,7 +45,10 @@ export function NotificationsScreen() {
   return (
     <Screen padded={false} edges={['bottom']}>
       {unreadCount > 0 && (
-        <Row justify="flex-end" style={styles.header}>
+        <Row justify="space-between" style={styles.header}>
+          <Text variant="caption" color="textMuted">
+            {unreadCount} sin leer
+          </Text>
           <Button
             title={strings.notifications.markAllRead}
             variant="ghost"
@@ -58,20 +71,31 @@ export function NotificationsScreen() {
               onPress={() => !item.read && markRead.mutate(item.id)}
               disabled={item.read}
             >
-              <Card style={!item.read ? styles.unread : undefined}>
-                <Row align="flex-start" gap="sm">
+              <Card style={!item.read ? styles.unread : styles.read}>
+                <Row align="flex-start" gap="md">
                   <View
                     style={[
-                      styles.dot,
+                      styles.iconWrap,
                       {
                         backgroundColor: item.read
-                          ? colors.border
-                          : colors.primary,
+                          ? colors.surfaceMuted
+                          : colors.primarySoft,
                       },
                     ]}
-                  />
+                  >
+                    <Ionicons
+                      name={TYPE_ICON[item.type]}
+                      size={18}
+                      color={item.read ? colors.textMuted : colors.primary}
+                    />
+                  </View>
                   <View style={styles.body}>
-                    <Text variant="subtitle">{item.title}</Text>
+                    <Row justify="space-between" align="flex-start" gap="sm">
+                      <Text variant="subtitle" style={styles.title}>
+                        {item.title}
+                      </Text>
+                      {!item.read && <View style={styles.dot} />}
+                    </Row>
                     <Text variant="body" color="textSecondary">
                       {item.body}
                     </Text>
@@ -85,6 +109,7 @@ export function NotificationsScreen() {
           )}
           ListEmptyComponent={
             <EmptyState
+              icon="notifications-outline"
               title={strings.notifications.empty}
               description={strings.notifications.emptyHint}
             />
@@ -101,7 +126,25 @@ const styles = StyleSheet.create({
     paddingTop: spacing.sm,
   },
   list: { padding: spacing.lg, gap: spacing.md, flexGrow: 1 },
-  unread: { borderColor: colors.focusRing },
-  dot: { width: 10, height: 10, borderRadius: 5, marginTop: spacing.xs },
-  body: { flex: 1, gap: spacing.xs },
+  unread: {
+    borderColor: colors.primarySoft,
+    backgroundColor: colors.backgroundRaised,
+  },
+  read: { opacity: 0.85 },
+  iconWrap: {
+    width: 40,
+    height: 40,
+    borderRadius: radii.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  body: { flex: 1, gap: 4 },
+  title: { flex: 1 },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: colors.primary,
+    marginTop: 6,
+  },
 });

@@ -3,45 +3,78 @@
  *
  * Punto único de verdad para color, espaciado, tipografía y radios.
  * Las pantallas y componentes NO deben usar valores mágicos: siempre `theme.*`.
+ *
+ * Estética "casa cálida / editorial": neutros arena, acento terracota y verde
+ * salvia, titulares en serif (Fraunces) y texto de interfaz en Manrope.
  */
 
 const palette = {
-  blue900: '#0B2545',
-  blue700: '#13315C',
-  blue500: '#134074',
-  blue300: '#8DA9C4',
-  blue100: '#EEF4ED',
-  aqua500: '#2A9D8F',
-  amber500: '#E9A23B',
-  red500: '#D64545',
-  green500: '#2F9E44',
+  // Neutros cálidos
+  paper: '#F4F1EA',
+  paperRaised: '#FBFAF6',
+  sand: '#EFE9DE',
+  clayBorder: '#E5DFD2',
+  ink: '#2B2621',
+  inkSoft: '#6D6459',
+  inkMuted: '#A69C8C',
   white: '#FFFFFF',
-  gray50: '#F7F9FB',
-  gray100: '#EDF1F5',
-  gray200: '#DDE3EA',
-  gray400: '#9AA5B1',
-  gray600: '#616E7C',
-  gray800: '#323F4B',
-  black: '#0A0F14',
+
+  // Marca
+  terracotta: '#C05B3E',
+  terracottaDeep: '#9C3F26',
+  terracottaSoft: '#F0DDD3',
+  sage: '#5C7F6B',
+  sageSoft: '#DEE7DE',
+
+  // Semánticos (afinados a la paleta)
+  green: '#4B7F52',
+  greenSoft: '#DCE8D8',
+  ochre: '#C4882F',
+  ochreSoft: '#F2E4C9',
+  ochreInk: '#875B1D',
+  rust: '#B4463C',
+  rustSoft: '#F0D9D4',
 } as const;
 
 export const colors = {
-  background: palette.gray50,
+  background: palette.paper,
+  backgroundRaised: palette.paperRaised,
   surface: palette.white,
-  surfaceMuted: palette.gray100,
-  border: palette.gray200,
-  primary: palette.blue500,
-  primaryStrong: palette.blue700,
-  onPrimary: palette.white,
-  accent: palette.aqua500,
-  textPrimary: palette.gray800,
-  textSecondary: palette.gray600,
-  textMuted: palette.gray400,
-  success: palette.green500,
-  warning: palette.amber500,
-  danger: palette.red500,
-  focusRing: palette.blue300,
+  surfaceMuted: palette.sand,
+  border: palette.clayBorder,
+
+  primary: palette.terracotta,
+  primaryStrong: palette.terracottaDeep,
+  primarySoft: palette.terracottaSoft,
+  onPrimary: '#FFF7F2',
+
+  accent: palette.sage,
+  accentSoft: palette.sageSoft,
+
+  textPrimary: palette.ink,
+  textSecondary: palette.inkSoft,
+  textMuted: palette.inkMuted,
+
+  success: palette.green,
+  successSoft: palette.greenSoft,
+  warning: palette.ochre,
+  warningSoft: palette.ochreSoft,
+  warningInk: palette.ochreInk,
+  danger: palette.rust,
+  dangerSoft: palette.rustSoft,
+
+  focusRing: '#C9A895',
 } as const;
+
+/** Colores decorativos para las miniaturas/portadas (proyectos y productos). */
+export const swatches = [
+  '#C05B3E', // terracota
+  '#5C7F6B', // salvia
+  '#C4882F', // ocre
+  '#3F5E58', // verde azulado profundo
+  '#8C7A67', // topo
+  '#A9552F', // teja
+] as const;
 
 export const spacing = {
   xs: 4,
@@ -54,22 +87,71 @@ export const spacing = {
 } as const;
 
 export const radii = {
-  sm: 6,
-  md: 10,
-  lg: 16,
+  sm: 8,
+  md: 12,
+  lg: 18,
+  xl: 26,
   pill: 999,
 } as const;
 
+/**
+ * Familias tipográficas (nombres cargados en `App.tsx` con `useFonts`).
+ * Con fuentes personalizadas NO se usa `fontWeight`: cada peso es una familia.
+ */
+export const fonts = {
+  serifMedium: 'Fraunces_500Medium',
+  serifSemiBold: 'Fraunces_600SemiBold',
+  serifBold: 'Fraunces_700Bold',
+  sansRegular: 'Manrope_400Regular',
+  sansMedium: 'Manrope_500Medium',
+  sansSemiBold: 'Manrope_600SemiBold',
+  sansBold: 'Manrope_700Bold',
+} as const;
+
 export const typography = {
-  display: { fontSize: 28, lineHeight: 34, fontWeight: '700' },
-  title: { fontSize: 22, lineHeight: 28, fontWeight: '700' },
-  subtitle: { fontSize: 17, lineHeight: 24, fontWeight: '600' },
-  body: { fontSize: 15, lineHeight: 22, fontWeight: '400' },
-  label: { fontSize: 13, lineHeight: 18, fontWeight: '600' },
-  caption: { fontSize: 12, lineHeight: 16, fontWeight: '400' },
+  display: {
+    fontFamily: fonts.serifBold,
+    fontSize: 27,
+    lineHeight: 33,
+    letterSpacing: -0.4,
+  },
+  title: {
+    fontFamily: fonts.serifSemiBold,
+    fontSize: 23,
+    lineHeight: 29,
+    letterSpacing: -0.3,
+  },
+  subtitle: {
+    fontFamily: fonts.serifMedium,
+    fontSize: 17,
+    lineHeight: 23,
+    letterSpacing: -0.2,
+  },
+  body: {
+    fontFamily: fonts.sansRegular,
+    fontSize: 15,
+    lineHeight: 23,
+  },
+  bodyStrong: {
+    fontFamily: fonts.sansSemiBold,
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  label: {
+    fontFamily: fonts.sansSemiBold,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.7,
+    textTransform: 'uppercase' as const,
+  },
+  caption: {
+    fontFamily: fonts.sansMedium,
+    fontSize: 12,
+    lineHeight: 16,
+  },
 } as const;
 
 export type TypographyVariant = keyof typeof typography;
 
-export const theme = { colors, spacing, radii, typography } as const;
+export const theme = { colors, spacing, radii, typography, fonts } as const;
 export type Theme = typeof theme;
