@@ -130,8 +130,24 @@ export const spacing = {
 /** Margen horizontal de página (gutter). Más generoso que en un layout genérico. */
 export const pageGutter = spacing.xl;
 
-/** Ancho máximo del lienzo en web: la app vive como una columna con márgenes. */
-export const webCanvasMaxWidth = 460;
+/**
+ * Puntos de corte para layout responsivo (ancho de ventana, en dp/px CSS).
+ * `tablet` activa layouts de 2 columnas; `desktop` activa el chrome de
+ * escritorio (rail lateral, grids de 3+ columnas, detalle a 2 columnas).
+ */
+export const breakpoints = {
+  tablet: 768,
+  desktop: 1024,
+} as const;
+
+/** Ancho máximo de columnas de lectura/formulario (login, detalle, avisos). */
+export const contentMaxWidth = 760;
+
+/** Ancho máximo de las pantallas de grid (catálogo, proyectos, carrito). */
+export const gridMaxWidth = 1180;
+
+/** Ancho del formulario de auth (login) en pantallas anchas. */
+export const webCanvasMaxWidth = 420;
 
 export const radii = {
   sm: 4,

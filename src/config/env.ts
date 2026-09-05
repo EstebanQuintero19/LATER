@@ -25,7 +25,7 @@ export const env: AppEnv = {
     process.env.EXPO_PUBLIC_API_BASE_URL ??
     (typeof extra.apiBaseUrl === 'string'
       ? extra.apiBaseUrl
-      : 'https://api.river.example'),
+      : 'https://api.later.example'),
   useMockApi:
     process.env.EXPO_PUBLIC_USE_MOCK_API === 'false'
       ? false

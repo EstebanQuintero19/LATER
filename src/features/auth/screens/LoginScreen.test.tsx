@@ -22,11 +22,11 @@ describe('LoginScreen', () => {
 
     await fireEvent.changeText(
       view.getByLabelText(strings.auth.email),
-      'alba@river.example',
+      'alba@later.example',
     );
     await fireEvent.changeText(
       view.getByLabelText(strings.auth.password),
-      'river1234',
+      'later1234',
     );
     await fireEvent.press(view.getByText(strings.auth.submit));
 
@@ -34,7 +34,7 @@ describe('LoginScreen', () => {
       expect(view.store.getState().session.status).toBe('authenticated');
     });
     expect(view.store.getState().session.user?.email).toBe(
-      'alba@river.example',
+      'alba@later.example',
     );
   });
 });

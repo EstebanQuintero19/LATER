@@ -10,6 +10,7 @@ import {
   Thumbnail,
   colors,
   dummyImage,
+  gridMaxWidth,
   pageGutter,
   radii,
   spacing,
@@ -144,40 +145,47 @@ export function CartScreen() {
 
   return (
     <Screen padded={false} edges={['bottom']}>
-      <FlatList
-        data={lines}
-        keyExtractor={(l) => l.productId}
-        contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <CartRow
-            line={item}
-            onQty={(n) => setQuantity(item.productId, n)}
-            onRemove={() => remove(item.productId)}
-          />
-        )}
-      />
+      <View style={styles.page}>
+        <FlatList
+          data={lines}
+          keyExtractor={(l) => l.productId}
+          style={styles.listOuter}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => (
+            <CartRow
+              line={item}
+              onQty={(n) => setQuantity(item.productId, n)}
+              onRemove={() => remove(item.productId)}
+            />
+          )}
+        />
+      </View>
 
       <View style={styles.summary}>
-        <Row justify="space-between" style={styles.summaryRow}>
-          <Text variant="label" color="textMuted">
-            {strings.cart.subtotal}
-          </Text>
-          <Text variant="title" color="primaryStrong">
-            {formatCurrency(subtotal)}
-          </Text>
-        </Row>
-        <Button
-          title={strings.cart.checkout}
-          onPress={onCheckout}
-          fullWidth
-          size="lg"
-        />
+        <View style={styles.summaryInner}>
+          <Row justify="space-between" style={styles.summaryRow}>
+            <Text variant="label" color="textMuted">
+              {strings.cart.subtotal}
+            </Text>
+            <Text variant="title" color="primaryStrong">
+              {formatCurrency(subtotal)}
+            </Text>
+          </Row>
+          <Button
+            title={strings.cart.checkout}
+            onPress={onCheckout}
+            fullWidth
+            size="lg"
+          />
+        </View>
       </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  page: { flex: 1, width: '100%', alignItems: 'center' },
+  listOuter: { width: '100%', maxWidth: gridMaxWidth },
   list: {
     paddingHorizontal: pageGutter,
     paddingVertical: spacing.lg,
@@ -210,6 +218,11 @@ const styles = StyleSheet.create({
     borderTopColor: colors.border,
     paddingHorizontal: pageGutter,
     paddingVertical: spacing.lg,
+  },
+  summaryInner: {
+    width: '100%',
+    maxWidth: gridMaxWidth,
+    alignSelf: 'center',
     gap: spacing.md,
   },
   summaryRow: {},

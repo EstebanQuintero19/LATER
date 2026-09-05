@@ -7,6 +7,7 @@ import { strings } from '@/i18n';
 
 import { ProjectDetailScreen } from './screens/ProjectDetailScreen';
 import { ProjectsScreen } from './screens/ProjectsScreen';
+import { RequestRemodelScreen } from './screens/RequestRemodelScreen';
 
 const Stack = createNativeStackNavigator<ProjectsStackParamList>();
 
@@ -25,6 +26,11 @@ export function ProjectsStack() {
         name="ProjectDetail"
         component={ProjectDetailScreen}
         options={{ title: strings.projects.detailTitle }}
+      />
+      <Stack.Screen
+        name="RequestRemodel"
+        component={RequestRemodelScreen}
+        options={{ title: strings.requestRemodel.title }}
       />
     </Stack.Navigator>
   );

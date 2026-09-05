@@ -1,18 +1,18 @@
 {
   "expo": {
-    "name": "River",
-    "slug": "river-app",
+    "name": "LATER",
+    "slug": "later-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme": "river",
+    "scheme": "later",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.river.app"
+      "bundleIdentifier": "com.later.app"
     },
     "android": {
-      "package": "com.river.app",
+      "package": "com.later.app",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/android-icon-foreground.png",
@@ -30,7 +30,7 @@
       "expo-splash-screen"
     ],
     "extra": {
-      "apiBaseUrl": "https://api.river.example",
+      "apiBaseUrl": "https://api.later.example",
       "useMockApi": true,
       "mockLatencyMs": 350
     }

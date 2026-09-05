@@ -1,6 +1,14 @@
 import { env } from '@/config/env';
 import { mockDb } from '@/mock/db';
-import { DEMO_PASSWORD, mockUsers } from '@/mock/fixtures';
+import { DEMO_PASSWORD, mockUsers, projectCoverColors } from '@/mock/fixtures';
+import { AppointmentDto } from '@/features/appointments/types';
+import { NotificationDto } from '@/features/notifications/types';
+import {
+  CreateRemodelRequest,
+  PreferredTiming,
+  ProjectDto,
+  REMODEL_TYPE_LABEL,
+} from '@/features/projects/types';
 
 import { ApiError } from './errors';
 import type { HttpMethod } from './client';
@@ -14,6 +22,18 @@ interface MockRequest {
 }
 
 const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/** Fecha sugerida para la visita de medición según la urgencia elegida. */
+function scheduledAtFor(timing: PreferredTiming | undefined): string {
+  const daysFromNow: Record<PreferredTiming, number> = {
+    this_week: 3,
+    next_week: 9,
+    this_month: 21,
+    flexible: 30,
+  };
+  const days = timing ? daysFromNow[timing] : daysFromNow.flexible;
+  return new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
+}
 
 /** `Bearer` sintético: `mock.<userId>`. Válido si el usuario existe. */
 function userIdFromToken(token: string | null): string | null {
@@ -94,6 +114,65 @@ export async function handleMockRequest<T>(req: MockRequest): Promise<T> {
           message: 'Proyecto no encontrado',
         });
       }
+      return project as T;
+    }
+
+    // "Solicitar remodelación": registra el proyecto y, como haría un backend
+    // real orquestando el caso de uso completo, agenda de una vez la visita
+    // de medición y notifica la recepción de la solicitud.
+    case route === 'POST /projects': {
+      requireAuth(req.token);
+      const body = (req.body ?? {}) as Partial<CreateRemodelRequest>;
+      if (!body.client || !body.location || !body.remodelType) {
+        throw new ApiError({
+          status: 422,
+          code: 'validation_error',
+          message: 'Faltan campos obligatorios de la solicitud',
+        });
+      }
+
+      const now = new Date().toISOString();
+      const seq = mockDb.projects.length + 1;
+      const id = `prj_req_${seq}`;
+      const name = `${REMODEL_TYPE_LABEL[body.remodelType]} — ${body.location}`;
+
+      const project: ProjectDto = {
+        id,
+        name,
+        client: body.client,
+        status: 'measuring',
+        memberCount: 1,
+        updatedAt: now,
+        coverColor: projectCoverColors[seq % projectCoverColors.length],
+        remodelType: body.remodelType,
+        location: body.location,
+        sizeM2: body.sizeM2,
+        budgetRange: body.budgetRange,
+        description: body.description,
+      };
+      mockDb.projects = [project, ...mockDb.projects];
+
+      const appointment: AppointmentDto = {
+        id: `apt_req_${seq}`,
+        title: 'Visita de medición',
+        projectId: id,
+        projectName: name,
+        scheduledAt: scheduledAtFor(body.preferredTiming),
+        status: 'pending',
+        location: body.location,
+      };
+      mockDb.appointments = [appointment, ...mockDb.appointments];
+
+      const notification: NotificationDto = {
+        id: `ntf_req_${seq}`,
+        type: 'project',
+        title: 'Solicitud recibida',
+        body: `Registramos "${name}" para ${body.client} y agendamos la visita de medición.`,
+        createdAt: now,
+        read: false,
+      };
+      mockDb.notifications = [notification, ...mockDb.notifications];
+
       return project as T;
     }
 

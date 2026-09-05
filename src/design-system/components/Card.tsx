@@ -26,7 +26,9 @@ export function Card({
     <Pressable
       accessibilityRole="button"
       onPress={onPress}
-      style={({ pressed }) => pressed && styles.pressed}
+      // `style` también debe llegar aquí: es el hijo real dentro de un padre
+      // flex (p. ej. una celda de grid con `flex: 1`), no sólo la `View` interna.
+      style={({ pressed }) => [style, pressed && styles.pressed]}
     >
       {content}
     </Pressable>

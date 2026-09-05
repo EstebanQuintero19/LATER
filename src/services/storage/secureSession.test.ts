@@ -6,7 +6,7 @@ const session: PersistedSession = {
   accessToken: 'access-123',
   refreshToken: 'refresh-123',
   expiresAt: Date.now() + 3_600_000,
-  user: { id: 'usr_1', name: 'Alba', email: 'alba@river.example' },
+  user: { id: 'usr_1', name: 'Alba', email: 'alba@later.example' },
 };
 
 describe('secureSessionStorage (corrección de vulnerabilidad)', () => {
@@ -18,7 +18,7 @@ describe('secureSessionStorage (corrección de vulnerabilidad)', () => {
     expect(SecureStore.setItemAsync).toHaveBeenCalledTimes(1);
     const [key, value, options] = (SecureStore.setItemAsync as jest.Mock).mock
       .calls[0];
-    expect(key).toBe('river.session.v1');
+    expect(key).toBe('later.session.v1');
     expect(JSON.parse(value)).toEqual(session);
     // Debe fijar accesibilidad restringida al dispositivo.
     expect(options).toMatchObject({
@@ -36,7 +36,7 @@ describe('secureSessionStorage (corrección de vulnerabilidad)', () => {
 
     await expect(secureSessionStorage.load()).resolves.toBeNull();
     expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
-      'river.session.v1',
+      'later.session.v1',
       expect.any(Object),
     );
   });
@@ -44,7 +44,7 @@ describe('secureSessionStorage (corrección de vulnerabilidad)', () => {
   it('clear elimina la entrada segura', async () => {
     await secureSessionStorage.clear();
     expect(SecureStore.deleteItemAsync).toHaveBeenCalledWith(
-      'river.session.v1',
+      'later.session.v1',
       expect.any(Object),
     );
   });

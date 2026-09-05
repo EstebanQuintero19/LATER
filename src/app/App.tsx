@@ -13,9 +13,9 @@ import {
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
-import { Platform, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { colors, webCanvasMaxWidth } from '@/design-system';
+import { colors } from '@/design-system';
 
 import { AppProviders } from './providers/AppProviders';
 import { RootNavigator } from './navigation/RootNavigator';
@@ -39,36 +39,19 @@ export default function App() {
 
   if (!fontsLoaded && !fontError) return null;
 
-  const isWeb = Platform.OS === 'web';
-
   return (
-    <View style={styles.mat} onLayout={onLayout}>
-      {/* En web la app vive como una columna con márgenes, no a sangre. */}
-      <View style={[styles.canvas, isWeb && styles.canvasWeb]}>
-        <AppProviders>
-          <StatusBar style="dark" />
-          <RootNavigator />
-        </AppProviders>
-      </View>
+    <View style={styles.canvas} onLayout={onLayout}>
+      <AppProviders>
+        <StatusBar style="dark" />
+        <RootNavigator />
+      </AppProviders>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  mat: {
-    flex: 1,
-    backgroundColor: '#E0D7CD',
-    alignItems: 'center',
-  },
   canvas: {
     flex: 1,
-    width: '100%',
     backgroundColor: colors.background,
-  },
-  canvasWeb: {
-    maxWidth: webCanvasMaxWidth,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: colors.border,
   },
 });

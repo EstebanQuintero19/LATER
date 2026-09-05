@@ -1,7 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StyleSheet } from 'react-native';
 
-import { colors, fonts } from '@/design-system';
+import { colors, fonts, radii, spacing, useResponsive } from '@/design-system';
 import { strings } from '@/i18n';
 import { AppointmentsScreen } from '@/features/appointments/screens/AppointmentsScreen';
 import { CartScreen } from '@/features/cart/screens/CartScreen';
@@ -30,25 +31,23 @@ const ICONS: Record<keyof MainTabParamList, IoniconName> = {
 export function MainTabs() {
   const { count: cartCount } = useCart();
   const { unreadCount } = useNotifications();
+  const { isDesktop } = useResponsive();
 
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
+        // En escritorio la navegación vive en un rail lateral fijo; en móvil
+        // sigue siendo la barra inferior de siempre.
+        tabBarPosition: isDesktop ? 'left' : 'bottom',
+        tabBarVariant: isDesktop ? 'material' : 'uikit',
+        tabBarLabelPosition: isDesktop ? 'beside-icon' : undefined,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
-        tabBarStyle: {
-          backgroundColor: colors.backgroundRaised,
-          borderTopColor: colors.border,
-          height: 64,
-          paddingTop: 6,
-          paddingBottom: 8,
-        },
-        tabBarLabelStyle: {
-          fontFamily: fonts.sansSemiBold,
-          fontSize: 11,
-          letterSpacing: 0.2,
-        },
+        tabBarActiveBackgroundColor: isDesktop ? colors.primarySoft : undefined,
+        tabBarStyle: isDesktop ? styles.sidebar : styles.bottomBar,
+        tabBarItemStyle: isDesktop ? styles.sidebarItem : undefined,
+        tabBarLabelStyle: isDesktop ? styles.sidebarLabel : styles.bottomLabel,
         tabBarIcon: ({ color, size, focused }) => (
           <Ionicons
             name={
@@ -105,3 +104,32 @@ export function MainTabs() {
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  bottomBar: {
+    backgroundColor: colors.backgroundRaised,
+    borderTopColor: colors.border,
+    height: 64,
+    paddingTop: 6,
+    paddingBottom: 8,
+  },
+  bottomLabel: {
+    fontFamily: fonts.sansSemiBold,
+    fontSize: 11,
+    letterSpacing: 0.2,
+  },
+  sidebar: {
+    width: 232,
+    backgroundColor: colors.backgroundRaised,
+    borderRightColor: colors.border,
+  },
+  sidebarItem: {
+    borderRadius: radii.md,
+    marginHorizontal: spacing.sm,
+  },
+  sidebarLabel: {
+    fontFamily: fonts.sansSemiBold,
+    fontSize: 14,
+    letterSpacing: 0.1,
+  },
+});

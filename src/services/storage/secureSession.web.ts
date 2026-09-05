@@ -12,7 +12,7 @@ import type { PersistedSession } from './secureSession';
  * cifrada mediante Keychain / Keystore (ver `secureSession.ts`).
  */
 
-const SESSION_KEY = 'river.session.v1';
+const SESSION_KEY = 'later.session.v1';
 
 export const secureSessionStorage = {
   async load(): Promise<PersistedSession | null> {

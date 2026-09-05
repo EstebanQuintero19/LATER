@@ -6,7 +6,7 @@
  * implementación simulada para Expo Go y para tests.
  *
  * Integración real (cuando exista el módulo):
- *   1. Añadir el paquete nativo (p. ej. `react-native-river-scanner`) o un
+ *   1. Añadir el paquete nativo (p. ej. `react-native-later-scanner`) o un
  *      config plugin de Expo.
  *   2. Sustituir `simulatedScanner3d` por el binding nativo aquí, sin tocar
  *      las pantallas.

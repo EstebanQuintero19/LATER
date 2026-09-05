@@ -1,6 +1,6 @@
-# River — App móvil (frontend)
+# LATER — App móvil (frontend)
 
-App móvil de River construida con **Expo + React Native + TypeScript**. Gestiona
+App móvil de LATER construida con **Expo + React Native + TypeScript**. Gestiona
 proyectos de reforma/interiorismo: catálogo de productos, carrito, agenda de
 citas y notificaciones, con vista previa nativa en **3D / Realidad Aumentada**
 (módulos del equipo iOS).
@@ -46,8 +46,8 @@ npm run format       # prettier --write
 
 ### Credenciales de demo
 
-Cualquier correo con formato válido + contraseña **`river1234`**.
-(p. ej. `alba@river.example` / `river1234`).
+Cualquier correo con formato válido + contraseña **`later1234`**.
+(p. ej. `alba@later.example` / `later1234`).
 
 ---
 

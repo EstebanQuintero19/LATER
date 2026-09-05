@@ -10,16 +10,25 @@ export interface MockUser {
   password: string;
 }
 
-export const DEMO_PASSWORD = 'river1234';
+export const DEMO_PASSWORD = 'later1234';
 
 export const mockUsers: MockUser[] = [
   {
     id: 'usr_1',
     name: 'Alba Restrepo',
-    email: 'alba@river.example',
+    email: 'alba@later.example',
     password: DEMO_PASSWORD,
   },
 ];
+
+/** Paleta de acento para portadas de proyectos creados dinámicamente. */
+export const projectCoverColors = [
+  '#5C7F6B',
+  '#3F5E58',
+  '#C4882F',
+  '#8C7A67',
+  '#A9552F',
+] as const;
 
 export const mockProjects: ProjectDto[] = [
   {

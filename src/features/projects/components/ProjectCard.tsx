@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 
 import {
   Badge,
@@ -27,12 +27,14 @@ const STATUS_TONE: Record<
 export function ProjectCard({
   project,
   onPress,
+  style,
 }: {
   project: Project;
   onPress: () => void;
+  style?: ViewStyle;
 }) {
   return (
-    <Card onPress={onPress}>
+    <Card onPress={onPress} style={style}>
       <Row align="flex-start" gap="md">
         <Thumbnail
           image={dummyImage(project.id, 220, 220, 'renovation')}

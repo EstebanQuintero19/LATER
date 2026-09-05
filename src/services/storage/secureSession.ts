@@ -33,7 +33,7 @@ export interface PersistedSession {
   };
 }
 
-const SESSION_KEY = 'river.session.v1';
+const SESSION_KEY = 'later.session.v1';
 
 const SECURE_OPTIONS: SecureStore.SecureStoreOptions = {
   // La sesión sólo debe ser accesible con el dispositivo desbloqueado y nunca

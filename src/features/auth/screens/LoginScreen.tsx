@@ -10,6 +10,7 @@ import {
   colors,
   fonts,
   spacing,
+  webCanvasMaxWidth,
 } from '@/design-system';
 import { strings } from '@/i18n';
 
@@ -45,69 +46,72 @@ export function LoginScreen() {
 
   return (
     <Screen scroll edges={['bottom']} contentStyle={styles.content}>
-      <View style={styles.header}>
-        <Thumbnail color={colors.borderAccent} icon="home" size="lg" />
-        <View style={styles.brandLine}>
-          <Text style={styles.wordmark}>River</Text>
-          <View style={styles.dot} />
-        </View>
-        <Text variant="display" style={styles.title}>
-          {strings.auth.title}
-        </Text>
-        <Text variant="body" color="textSecondary" center>
-          {strings.auth.subtitle}
-        </Text>
-      </View>
-
-      <View style={styles.form}>
-        <Input
-          label={strings.auth.email}
-          value={email}
-          onChangeText={setEmail}
-          onBlur={() => setTouched(true)}
-          autoCapitalize="none"
-          autoComplete="email"
-          keyboardType="email-address"
-          inputMode="email"
-          error={emailError}
-        />
-        <Input
-          label={strings.auth.password}
-          value={password}
-          onChangeText={setPassword}
-          onBlur={() => setTouched(true)}
-          secureTextEntry
-          autoComplete="current-password"
-          error={passwordError}
-          onSubmitEditing={onSubmit}
-          returnKeyType="go"
-        />
-
-        {error ? (
-          <Text variant="caption" color="danger">
-            {error}
+      <View style={styles.column}>
+        <View style={styles.header}>
+          <Thumbnail color={colors.borderAccent} icon="home" size="lg" />
+          <View style={styles.brandLine}>
+            <Text style={styles.wordmark}>LATER</Text>
+            <View style={styles.dot} />
+          </View>
+          <Text variant="display" style={styles.title}>
+            {strings.auth.title}
           </Text>
-        ) : null}
+          <Text variant="body" color="textSecondary" center>
+            {strings.auth.subtitle}
+          </Text>
+        </View>
 
-        <Button
-          title={isBusy ? strings.auth.signingIn : strings.auth.submit}
-          onPress={onSubmit}
-          loading={isBusy}
-          disabled={!canSubmit}
-          fullWidth
-          size="lg"
-        />
+        <View style={styles.form}>
+          <Input
+            label={strings.auth.email}
+            value={email}
+            onChangeText={setEmail}
+            onBlur={() => setTouched(true)}
+            autoCapitalize="none"
+            autoComplete="email"
+            keyboardType="email-address"
+            inputMode="email"
+            error={emailError}
+          />
+          <Input
+            label={strings.auth.password}
+            value={password}
+            onChangeText={setPassword}
+            onBlur={() => setTouched(true)}
+            secureTextEntry
+            autoComplete="current-password"
+            error={passwordError}
+            onSubmitEditing={onSubmit}
+            returnKeyType="go"
+          />
 
-        <Text variant="caption" color="textMuted" center>
-          {strings.auth.demoHint}
-        </Text>
+          {error ? (
+            <Text variant="caption" color="danger">
+              {error}
+            </Text>
+          ) : null}
+
+          <Button
+            title={isBusy ? strings.auth.signingIn : strings.auth.submit}
+            onPress={onSubmit}
+            loading={isBusy}
+            disabled={!canSubmit}
+            fullWidth
+            size="lg"
+          />
+
+          <Text variant="caption" color="textMuted" center>
+            {strings.auth.demoHint}
+          </Text>
+        </View>
       </View>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { flexGrow: 1, justifyContent: 'center', gap: spacing.xxl },
+  content: { flexGrow: 1, justifyContent: 'center', alignItems: 'center' },
+  column: { width: '100%', maxWidth: webCanvasMaxWidth, gap: spacing.xxl },
   header: { alignItems: 'center', gap: spacing.sm },
   brandLine: {
     flexDirection: 'row',

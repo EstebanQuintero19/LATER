@@ -8,6 +8,7 @@ import {
   Row,
   Text,
   colors,
+  contentMaxWidth,
   dummyImage,
   fonts,
   pageGutter,
@@ -76,7 +77,7 @@ export function WelcomeScreen({ navigation }: RootStackScreenProps<'Welcome'>) {
             ]}
           >
             <Row gap="xs" style={styles.brand}>
-              <Text style={styles.wordmark}>River</Text>
+              <Text style={styles.wordmark}>LATER</Text>
               <View style={styles.brandDot} />
             </Row>
 
@@ -91,52 +92,57 @@ export function WelcomeScreen({ navigation }: RootStackScreenProps<'Welcome'>) {
           </View>
         </View>
 
-        {/* ---- CTA ---- */}
-        <View style={styles.ctaBlock}>
-          <Button
-            title={strings.welcome.primaryCta}
-            size="lg"
-            fullWidth
-            onPress={() => navigation.navigate('Login')}
-          />
-          <Text variant="caption" color="textMuted" center>
-            {strings.auth.demoHint}
-          </Text>
-        </View>
-
-        {/* ---- Qué encontrarás dentro ---- */}
-        <View style={styles.features}>
-          <Text variant="label" color="accent" style={styles.featuresLabel}>
-            {strings.welcome.featuresTitle}
-          </Text>
-          <View style={styles.featureList}>
-            {FEATURES.map((f, i) => (
-              <View
-                key={f.title}
-                style={[styles.featureRow, i > 0 && styles.featureDivider]}
-              >
-                <View style={styles.featureIcon}>
-                  <Ionicons name={f.icon} size={19} color={colors.accent} />
-                </View>
-                <View style={styles.featureText}>
-                  <Text variant="bodyStrong">{f.title}</Text>
-                  <Text variant="caption" color="textSecondary">
-                    {f.body}
-                  </Text>
-                </View>
-              </View>
-            ))}
+        <View style={styles.below}>
+          {/* ---- CTA ---- */}
+          <View style={styles.ctaBlock}>
+            <Button
+              title={strings.welcome.primaryCta}
+              size="lg"
+              fullWidth
+              onPress={() => navigation.navigate('Login')}
+            />
+            <Text variant="caption" color="textMuted" center>
+              {strings.auth.demoHint}
+            </Text>
           </View>
-        </View>
 
-        <Text
-          variant="caption"
-          color="textMuted"
-          center
-          style={[styles.footer, { marginBottom: insets.bottom + spacing.lg }]}
-        >
-          {strings.welcome.footer}
-        </Text>
+          {/* ---- Qué encontrarás dentro ---- */}
+          <View style={styles.features}>
+            <Text variant="label" color="accent" style={styles.featuresLabel}>
+              {strings.welcome.featuresTitle}
+            </Text>
+            <View style={styles.featureList}>
+              {FEATURES.map((f, i) => (
+                <View
+                  key={f.title}
+                  style={[styles.featureRow, i > 0 && styles.featureDivider]}
+                >
+                  <View style={styles.featureIcon}>
+                    <Ionicons name={f.icon} size={19} color={colors.accent} />
+                  </View>
+                  <View style={styles.featureText}>
+                    <Text variant="bodyStrong">{f.title}</Text>
+                    <Text variant="caption" color="textSecondary">
+                      {f.body}
+                    </Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <Text
+            variant="caption"
+            color="textMuted"
+            center
+            style={[
+              styles.footer,
+              { marginBottom: insets.bottom + spacing.lg },
+            ]}
+          >
+            {strings.welcome.footer}
+          </Text>
+        </View>
       </ScrollView>
     </View>
   );
@@ -214,6 +220,8 @@ const styles = StyleSheet.create({
     color: 'rgba(249,248,246,0.88)',
     maxWidth: 340,
   },
+
+  below: { width: '100%', maxWidth: contentMaxWidth, alignSelf: 'center' },
 
   ctaBlock: {
     paddingHorizontal: pageGutter,

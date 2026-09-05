@@ -1,6 +1,6 @@
 import { apiRequest } from '@/services/http/client';
 
-import { Project, ProjectDto } from '../types';
+import { CreateRemodelRequest, Project, ProjectDto } from '../types';
 
 const toProject = (dto: ProjectDto): Project => ({
   ...dto,
@@ -17,6 +17,14 @@ export const projectsApi = {
 
   async getById(id: string, signal?: AbortSignal): Promise<Project> {
     const dto = await apiRequest<ProjectDto>(`/projects/${id}`, { signal });
+    return toProject(dto);
+  },
+
+  async create(payload: CreateRemodelRequest): Promise<Project> {
+    const dto = await apiRequest<ProjectDto>('/projects', {
+      method: 'POST',
+      body: payload,
+    });
     return toProject(dto);
   },
 };

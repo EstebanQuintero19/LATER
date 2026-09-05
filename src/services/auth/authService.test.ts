@@ -10,19 +10,19 @@ describe('RestAuthService (contra el mock server)', () => {
     const saveSpy = jest.spyOn(secureSessionStorage, 'save');
 
     const { session } = await auth.signIn({
-      email: 'alba@river.example',
+      email: 'alba@later.example',
       password: DEMO_PASSWORD,
     });
 
     expect(session.accessToken).toMatch(/^mock\./);
-    expect(session.user.email).toBe('alba@river.example');
+    expect(session.user.email).toBe('alba@later.example');
     expect(session.expiresAt).toBeGreaterThan(Date.now());
     expect(saveSpy).toHaveBeenCalledWith(session);
   });
 
   it('rechaza credenciales inválidas', async () => {
     await expect(
-      auth.signIn({ email: 'alba@river.example', password: 'incorrecta' }),
+      auth.signIn({ email: 'alba@later.example', password: 'incorrecta' }),
     ).rejects.toThrow(/Credenciales/);
   });
 
@@ -31,14 +31,14 @@ describe('RestAuthService (contra el mock server)', () => {
       accessToken: 'a',
       refreshToken: 'r',
       expiresAt: Date.now() - 1000,
-      user: { id: 'usr_1', name: 'Alba', email: 'alba@river.example' },
+      user: { id: 'usr_1', name: 'Alba', email: 'alba@later.example' },
     });
 
     await expect(auth.restore()).resolves.toBeNull();
   });
 
   it('signOut limpia la sesión persistida', async () => {
-    await auth.signIn({ email: 'alba@river.example', password: DEMO_PASSWORD });
+    await auth.signIn({ email: 'alba@later.example', password: DEMO_PASSWORD });
     await auth.signOut();
     await expect(secureSessionStorage.load()).resolves.toBeNull();
   });

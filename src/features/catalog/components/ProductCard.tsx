@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 
 import {
   Badge,
@@ -44,16 +44,18 @@ export function categoryImageTheme(category: string): ImageTheme {
 export function ProductCard({
   product,
   onPress,
+  style,
 }: {
   product: Product;
   onPress: () => void;
+  style?: ViewStyle;
 }) {
   const cart = useCart();
   const inCart = useCartQuantity(product.id);
   const available = isInStock(product);
 
   return (
-    <Card>
+    <Card style={style}>
       {/* Zona de navegación al detalle (separada del botón para no anidar pulsables). */}
       <Pressable
         accessibilityRole="button"
