@@ -35,7 +35,7 @@ export function ProjectCard({
     <Card onPress={onPress}>
       <Row align="flex-start" gap="md">
         <Thumbnail
-          image={dummyImage(project.id, 220, 220)}
+          image={dummyImage(project.id, 220, 220, 'renovation')}
           color={project.coverColor}
           label={project.name}
           size="md"

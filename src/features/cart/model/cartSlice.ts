@@ -6,6 +6,7 @@ import { Product } from '@/features/catalog/types';
 export interface CartLine {
   productId: string;
   name: string;
+  category: string;
   unitPrice: number;
   currency: Product['currency'];
   quantity: number;
@@ -34,6 +35,7 @@ const cartSlice = createSlice({
       state.lines[product.id] = {
         productId: product.id,
         name: product.name,
+        category: product.category,
         unitPrice: product.price,
         currency: product.currency,
         accentColor: product.accentColor,

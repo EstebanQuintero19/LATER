@@ -12,6 +12,7 @@ export {
   colors,
   dummyImage,
   fonts,
+  imageThemes,
   pageGutter,
   radii,
   spacing,
@@ -20,4 +21,4 @@ export {
   typography,
   webCanvasMaxWidth,
 } from './tokens';
-export type { Theme, TypographyVariant } from './tokens';
+export type { ImageTheme, Theme, TypographyVariant } from './tokens';

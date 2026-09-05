@@ -44,7 +44,7 @@ export function LoginScreen() {
   };
 
   return (
-    <Screen scroll contentStyle={styles.content}>
+    <Screen scroll edges={['bottom']} contentStyle={styles.content}>
       <View style={styles.header}>
         <Thumbnail color={colors.borderAccent} icon="home" size="lg" />
         <View style={styles.brandLine}>

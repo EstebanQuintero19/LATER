@@ -5,6 +5,7 @@ import {
   Badge,
   Button,
   Card,
+  ImageTheme,
   Row,
   Text,
   Thumbnail,
@@ -26,6 +27,18 @@ export function categoryIcon(category: string): keyof typeof Ionicons.glyphMap {
     Iluminación: 'bulb-outline',
   };
   return map[category] ?? 'pricetag-outline';
+}
+
+/** Tema fotográfico afín a cada categoría, para que la portada del producto
+ * corresponda con lo que realmente vende (nada de fotos genéricas al azar). */
+export function categoryImageTheme(category: string): ImageTheme {
+  const map: Record<string, ImageTheme> = {
+    Superficies: 'surfaces',
+    Grifería: 'fixtures',
+    Mobiliario: 'furniture',
+    Iluminación: 'lighting',
+  };
+  return map[category] ?? 'interior';
 }
 
 export function ProductCard({
@@ -50,7 +63,12 @@ export function ProductCard({
       >
         <Row align="flex-start" gap="md">
           <Thumbnail
-            image={dummyImage(product.id, 260, 260)}
+            image={dummyImage(
+              product.id,
+              260,
+              260,
+              categoryImageTheme(product.category),
+            )}
             color={product.accentColor}
             icon={categoryIcon(product.category)}
             size="lg"

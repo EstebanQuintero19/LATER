@@ -17,7 +17,7 @@ import { formatCurrency } from '@/utils/format';
 import { useCart, useCartQuantity } from '@/features/cart/hooks/useCart';
 import type { CatalogStackScreenProps } from '@/app/navigation/types';
 
-import { categoryIcon } from '../components/ProductCard';
+import { categoryIcon, categoryImageTheme } from '../components/ProductCard';
 import { useNativePreview } from '../hooks/useNativePreview';
 import { useProduct } from '../hooks/useCatalog';
 import { isInStock } from '../types';
@@ -37,7 +37,12 @@ export function ProductDetailScreen({
         {product ? (
           <View style={styles.container}>
             <Thumbnail
-              image={dummyImage(product.id, 1040, 720)}
+              image={dummyImage(
+                product.id,
+                1040,
+                720,
+                categoryImageTheme(product.category),
+              )}
               color={product.accentColor}
               icon={categoryIcon(product.category)}
               size="hero"
@@ -78,7 +83,7 @@ export function ProductDetailScreen({
             {(product.supports3dScan || product.supportsAr) && (
               <Card>
                 <Text variant="label" color="textSecondary">
-                  Vista previa nativa · equipo iOS
+                  {strings.catalog.nativePreview}
                 </Text>
                 <Row gap="sm" style={styles.nativeRow} wrap>
                   {product.supports3dScan && (

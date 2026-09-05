@@ -3,8 +3,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-import { colors } from '@/design-system';
+import { colors, fonts } from '@/design-system';
 import { LoginScreen } from '@/features/auth/screens/LoginScreen';
+import { WelcomeScreen } from '@/features/auth/screens/WelcomeScreen';
 import { bootstrapSession } from '@/features/auth/model/sessionSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
@@ -49,7 +50,23 @@ export function RootNavigator() {
         {isAuthenticated ? (
           <Stack.Screen name="Main" component={MainTabs} />
         ) : (
-          <Stack.Screen name="Login" component={LoginScreen} />
+          <>
+            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{
+                headerShown: true,
+                headerTitle: '',
+                headerBackButtonDisplayMode: 'minimal',
+                headerShadowVisible: false,
+                headerStyle: { backgroundColor: colors.background },
+                headerTintColor: colors.textPrimary,
+                headerTitleStyle: { fontFamily: fonts.serifSemiBold },
+                contentStyle: { backgroundColor: colors.background },
+              }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

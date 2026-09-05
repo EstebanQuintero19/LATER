@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
+import { strings } from '@/i18n';
+
 import { colors, spacing } from '../tokens';
 import { Button } from './Button';
 import { Text } from './Text';
@@ -34,13 +36,17 @@ export function QueryStateView({
     return (
       <View style={styles.center}>
         <Text variant="subtitle" center>
-          No se pudo cargar la información
+          {strings.common.loadErrorTitle}
         </Text>
         <Text variant="body" color="textSecondary" center>
-          {error instanceof Error ? error.message : 'Error desconocido'}
+          {error instanceof Error ? error.message : strings.common.unknownError}
         </Text>
         {onRetry ? (
-          <Button title="Reintentar" variant="secondary" onPress={onRetry} />
+          <Button
+            title={strings.common.retry}
+            variant="secondary"
+            onPress={onRetry}
+          />
         ) : null}
       </View>
     );

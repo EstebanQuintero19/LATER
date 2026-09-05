@@ -79,10 +79,42 @@ export const swatches = [
   '#6F6353',
 ] as const;
 
-/** URL de imagen dummy estable a partir de una semilla (proyectos, productos…). */
-export function dummyImage(seed: string, width: number, height: number): string {
-  const s = encodeURIComponent(seed);
-  return `https://picsum.photos/seed/river-${s}/${width}/${height}?grayscale`;
+/**
+ * Temas de imagen: cada uno resuelve a fotografía real y afín al rubro
+ * (interiorismo/reforma), no a una foto aleatoria sin relación con el contenido.
+ */
+export const imageThemes = {
+  hero: 'interior,livingroom',
+  interior: 'interior,architecture',
+  renovation: 'renovation,construction',
+  surfaces: 'marble,stone',
+  fixtures: 'faucet,bathroom',
+  furniture: 'furniture,interior',
+  lighting: 'lamp,lighting',
+} as const;
+
+export type ImageTheme = keyof typeof imageThemes;
+
+function hashSeed(seed: string): number {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i += 1) {
+    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
+  }
+  return hash % 10000;
+}
+
+/**
+ * URL de imagen estable (misma semilla -> misma foto) y temática según el
+ * rubro, en blanco y negro para convivir con el velo camello de `Thumbnail`.
+ */
+export function dummyImage(
+  seed: string,
+  width: number,
+  height: number,
+  theme: ImageTheme = 'interior',
+): string {
+  const lock = hashSeed(seed);
+  return `https://loremflickr.com/g/${width}/${height}/${imageThemes[theme]}?lock=${lock}`;
 }
 
 export const spacing = {
@@ -124,6 +156,12 @@ export const fonts = {
 } as const;
 
 export const typography = {
+  hero: {
+    fontFamily: fonts.serifBold,
+    fontSize: 40,
+    lineHeight: 44,
+    letterSpacing: -1.2,
+  },
   display: {
     fontFamily: fonts.serifBold,
     fontSize: 28,

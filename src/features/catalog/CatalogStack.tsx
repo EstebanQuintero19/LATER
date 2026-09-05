@@ -24,7 +24,7 @@ export function CatalogStack() {
       <Stack.Screen
         name="ProductDetail"
         component={ProductDetailScreen}
-        options={{ title: 'Producto' }}
+        options={{ title: strings.catalog.detailTitle }}
       />
     </Stack.Navigator>
   );

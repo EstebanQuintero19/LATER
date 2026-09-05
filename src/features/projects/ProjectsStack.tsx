@@ -24,7 +24,7 @@ export function ProjectsStack() {
       <Stack.Screen
         name="ProjectDetail"
         component={ProjectDetailScreen}
-        options={{ title: 'Proyecto' }}
+        options={{ title: strings.projects.detailTitle }}
       />
     </Stack.Navigator>
   );

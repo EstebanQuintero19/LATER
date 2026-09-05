@@ -16,7 +16,10 @@ import {
 } from '@/design-system';
 import { strings } from '@/i18n';
 import { formatCurrency } from '@/utils/format';
-import { categoryIcon } from '@/features/catalog/components/ProductCard';
+import {
+  categoryIcon,
+  categoryImageTheme,
+} from '@/features/catalog/components/ProductCard';
 
 import { CartLine } from '../model/cartSlice';
 import { useCart } from '../hooks/useCart';
@@ -32,8 +35,9 @@ function QtyStepper({
     <Row gap="xs" style={styles.stepper}>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Restar"
+        accessibilityLabel={strings.cart.decrease}
         onPress={() => onChange(value - 1)}
+        hitSlop={spacing.sm}
         style={styles.stepBtn}
       >
         <Text style={styles.stepGlyph}>−</Text>
@@ -43,8 +47,9 @@ function QtyStepper({
       </Text>
       <Pressable
         accessibilityRole="button"
-        accessibilityLabel="Sumar"
+        accessibilityLabel={strings.cart.increase}
         onPress={() => onChange(value + 1)}
+        hitSlop={spacing.sm}
         style={styles.stepBtn}
       >
         <Text style={styles.stepGlyph}>+</Text>
@@ -66,9 +71,14 @@ function CartRow({
     <Card>
       <Row align="flex-start" gap="md">
         <Thumbnail
-          image={dummyImage(line.productId, 180, 180)}
+          image={dummyImage(
+            line.productId,
+            180,
+            180,
+            categoryImageTheme(line.category),
+          )}
           color={line.accentColor}
-          icon={categoryIcon('')}
+          icon={categoryIcon(line.category)}
           size="md"
         />
         <View style={styles.body}>
@@ -86,7 +96,12 @@ function CartRow({
           </Row>
         </View>
       </Row>
-      <Pressable onPress={onRemove} style={styles.remove}>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={`${strings.cart.remove} ${line.name}`}
+        onPress={onRemove}
+        style={styles.remove}
+      >
         <Text variant="caption" color="textMuted">
           {strings.cart.remove}
         </Text>
@@ -117,7 +132,7 @@ export function CartScreen() {
       [
         { text: strings.common.cancel, style: 'cancel' },
         {
-          text: 'Confirmar',
+          text: strings.cart.checkoutConfirm,
           onPress: () => {
             clear();
             Alert.alert(strings.cart.cleared);

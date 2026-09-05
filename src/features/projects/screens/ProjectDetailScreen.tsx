@@ -34,7 +34,7 @@ export function ProjectDetailScreen({
         {project ? (
           <View style={styles.container}>
             <Thumbnail
-              image={dummyImage(project.id, 960, 540)}
+              image={dummyImage(project.id, 960, 540, 'renovation')}
               color={project.coverColor}
               label={project.name}
               size="hero"
@@ -48,7 +48,7 @@ export function ProjectDetailScreen({
             </View>
 
             <Card padded={false}>
-              <DetailRow label="Estado">
+              <DetailRow label={strings.projects.status}>
                 <Badge
                   label={PROJECT_STATUS_LABEL[project.status]}
                   tone="primary"
@@ -59,7 +59,7 @@ export function ProjectDetailScreen({
                 <Text variant="bodyStrong">{project.memberCount}</Text>
               </DetailRow>
               <View style={styles.hr} />
-              <DetailRow label="Última actualización">
+              <DetailRow label={strings.projects.lastUpdate}>
                 <Text variant="bodyStrong">
                   {formatDate(project.updatedAt)}
                 </Text>

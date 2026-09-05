@@ -48,7 +48,7 @@ export function NotificationsScreen() {
       {unreadCount > 0 && (
         <Row justify="space-between" style={styles.header}>
           <Text variant="caption" color="textMuted">
-            {unreadCount} sin leer
+            {unreadCount} {strings.notifications.unreadSuffix}
           </Text>
           <Button
             title={strings.notifications.markAllRead}

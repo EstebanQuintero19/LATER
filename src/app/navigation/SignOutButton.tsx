@@ -9,7 +9,7 @@ export function SignOutButton() {
   const { signOut } = useSession();
 
   const confirm = () =>
-    Alert.alert(strings.auth.signOut, '¿Cerrar tu sesión?', [
+    Alert.alert(strings.auth.signOut, strings.auth.signOutPrompt, [
       { text: strings.common.cancel, style: 'cancel' },
       {
         text: strings.auth.signOut,

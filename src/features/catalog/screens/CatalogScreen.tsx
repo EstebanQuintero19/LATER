@@ -55,8 +55,8 @@ export function CatalogScreen({
             !isFetching ? (
               <EmptyState
                 icon="search-outline"
-                title="Sin resultados"
-                description="Prueba con otro término de búsqueda."
+                title={strings.catalog.noResults}
+                description={strings.catalog.noResultsHint}
               />
             ) : null
           }
