@@ -1,13 +1,15 @@
 import { AppointmentDto } from '@/features/appointments/types';
 import { ProductDto } from '@/features/catalog/types';
 import { NotificationDto } from '@/features/notifications/types';
-import { ProjectDto } from '@/features/projects/types';
+import { MessageDto, ProjectDto } from '@/features/projects/types';
 
 export interface MockUser {
   id: string;
   name: string;
   email: string;
   password: string;
+  address?: string;
+  phone?: string;
 }
 
 export const DEMO_PASSWORD = 'later1234';
@@ -18,6 +20,8 @@ export const mockUsers: MockUser[] = [
     name: 'Alba Restrepo',
     email: 'alba@later.example',
     password: DEMO_PASSWORD,
+    address: 'Cl. 90 #11-25, Bogotá',
+    phone: '+57 300 555 0142',
   },
 ];
 
@@ -125,6 +129,23 @@ export const mockAppointments: AppointmentDto[] = [
     scheduledAt: '2026-09-09T10:30:00.000Z',
     status: 'pending',
     location: 'Cl. 57 #9-20, Bogotá',
+  },
+];
+
+export const mockMessages: MessageDto[] = [
+  {
+    id: 'msg_1',
+    projectId: 'prj_2',
+    author: 'client',
+    body: '¿Podríamos adelantar la visita de medición una semana?',
+    createdAt: '2026-09-02T09:00:00.000Z',
+  },
+  {
+    id: 'msg_2',
+    projectId: 'prj_2',
+    author: 'staff',
+    body: 'Claro, la reagendamos. Te confirmamos fecha y hora en Citas.',
+    createdAt: '2026-09-02T10:15:00.000Z',
   },
 ];
 

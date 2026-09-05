@@ -9,6 +9,7 @@ export type ProjectsStackParamList = {
   ProjectsList: undefined;
   ProjectDetail: { projectId: string };
   RequestRemodel: undefined;
+  ProjectMessages: { projectId: string };
 };
 
 export type CatalogStackParamList = {
@@ -22,11 +23,16 @@ export type MainTabParamList = {
   CartTab: undefined;
   AppointmentsTab: undefined;
   NotificationsTab: undefined;
+  // Sin botón propio en el rail/barra (`tabBarButton: () => null`): se llega
+  // sólo desde el ícono de perfil de la cabecera, pero al vivir dentro del
+  // Tab.Navigator el rail lateral / la barra inferior no desaparecen.
+  ProfileTab: undefined;
 };
 
 export type RootStackParamList = {
   Welcome: undefined;
   Login: undefined;
+  Register: undefined;
   Main: NavigatorScreenParams<MainTabParamList>;
 };
 

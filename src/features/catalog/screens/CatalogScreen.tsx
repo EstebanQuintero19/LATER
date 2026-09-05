@@ -30,7 +30,7 @@ export function CatalogScreen({
   return (
     <Screen padded={false} edges={['bottom']}>
       <View style={styles.page}>
-        <View style={styles.header}>
+        <View style={[styles.header, isDesktop && styles.headerDesktop]}>
           <Input
             placeholder={strings.catalog.search}
             value={search}
@@ -51,7 +51,10 @@ export function CatalogScreen({
             keyExtractor={(p) => p.id}
             numColumns={numColumns}
             style={styles.listOuter}
-            contentContainerStyle={styles.list}
+            contentContainerStyle={[
+              styles.list,
+              isDesktop && styles.listDesktop,
+            ]}
             columnWrapperStyle={numColumns > 1 ? styles.column : undefined}
             keyboardDismissMode="on-drag"
             renderItem={({ item }) =>
@@ -61,6 +64,7 @@ export function CatalogScreen({
                 <ProductCard
                   product={item}
                   style={numColumns > 1 ? styles.cell : undefined}
+                  layout={numColumns > 1 ? 'column' : 'row'}
                   onPress={() =>
                     navigation.navigate('ProductDetail', {
                       productId: item.id,
@@ -97,6 +101,8 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.md,
     gap: spacing.md,
   },
+  // En escritorio, un poco más de aire respecto al rail lateral.
+  headerDesktop: { paddingLeft: spacing.xxl },
   listOuter: { width: '100%', maxWidth: gridMaxWidth },
   list: {
     paddingHorizontal: pageGutter,
@@ -104,6 +110,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     flexGrow: 1,
   },
+  listDesktop: { paddingLeft: spacing.xxl },
   column: { gap: spacing.md },
   cell: { flex: 1 },
 });

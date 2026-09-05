@@ -5,15 +5,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import {
   Button,
+  ImageTheme,
   Row,
   Text,
   colors,
   contentMaxWidth,
   dummyImage,
   fonts,
+  gridMaxWidth,
   pageGutter,
   radii,
   spacing,
+  useResponsive,
 } from '@/design-system';
 import { strings } from '@/i18n';
 import type { RootStackScreenProps } from '@/app/navigation/types';
@@ -42,8 +45,46 @@ const FEATURES: {
   },
 ];
 
+/**
+ * Muestra pública de resultados (marketing), independiente de los proyectos
+ * privados de clientes (`features/projects`) — no requiere sesión.
+ */
+const SHOWCASE_RESULTS: {
+  seed: string;
+  theme: ImageTheme;
+  name: string;
+  category: string;
+}[] = [
+  {
+    seed: 'showcase-kitchen',
+    theme: 'interior',
+    name: 'Cocina abierta, Chapinero',
+    category: 'Cocina integral',
+  },
+  {
+    seed: 'showcase-commercial',
+    theme: 'renovation',
+    name: 'Café Norte, Zona T',
+    category: 'Local comercial',
+  },
+  {
+    seed: 'showcase-bathroom',
+    theme: 'fixtures',
+    name: 'Baño principal, Cedritos',
+    category: 'Baño completo',
+  },
+  {
+    seed: 'showcase-living',
+    theme: 'furniture',
+    name: 'Sala y comedor, Usaquén',
+    category: 'Vivienda completa',
+    
+  },
+];
+
 export function WelcomeScreen({ navigation }: RootStackScreenProps<'Welcome'>) {
   const insets = useSafeAreaInsets();
+  const { isDesktop } = useResponsive();
 
   return (
     <View style={styles.root}>
@@ -91,6 +132,47 @@ export function WelcomeScreen({ navigation }: RootStackScreenProps<'Welcome'>) {
             </View>
           </View>
         </View>
+
+        {/* ---- Showcase de resultados: sólo escritorio, sin sesión ---- */}
+        {isDesktop && (
+          <View style={styles.showcase}>
+            <View style={styles.showcaseInner}>
+              <Text variant="label" color="accent">
+                {strings.welcome.showcaseTitle}
+              </Text>
+              <Text variant="subtitle" style={styles.showcaseSubtitle}>
+                {strings.welcome.showcaseSubtitle}
+              </Text>
+              <View style={styles.showcaseGrid}>
+                {SHOWCASE_RESULTS.map((item) => (
+                  <View key={item.seed} style={styles.showcaseCard}>
+                    <Image
+                      source={{
+                        uri: dummyImage(item.seed, 640, 480, item.theme),
+                      }}
+                      style={styles.showcaseImage}
+                      resizeMode="cover"
+                      accessibilityIgnoresInvertColors
+                    />
+                    <LinearGradient
+                      colors={['rgba(38,34,30,0)', 'rgba(38,34,30,0.82)']}
+                      locations={[0.3, 1]}
+                      style={styles.showcaseScrim}
+                    />
+                    <View style={styles.showcaseCaption}>
+                      <Text variant="caption" style={styles.showcaseCategory}>
+                        {item.category}
+                      </Text>
+                      <Text variant="bodyStrong" style={styles.showcaseName}>
+                        {item.name}
+                      </Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+        )}
 
         <View style={styles.below}>
           {/* ---- CTA ---- */}
@@ -220,6 +302,60 @@ const styles = StyleSheet.create({
     color: 'rgba(249,248,246,0.88)',
     maxWidth: 340,
   },
+
+  showcase: {
+    paddingHorizontal: pageGutter,
+    paddingVertical: spacing.xxxl,
+    backgroundColor: colors.backgroundRaised,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+    alignItems: 'center',
+  },
+  showcaseInner: { width: '100%', maxWidth: gridMaxWidth, gap: spacing.xs },
+  showcaseSubtitle: { color: colors.textSecondary, marginBottom: spacing.lg },
+  showcaseGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.lg,
+  },
+  showcaseCard: {
+    flexBasis: 250,
+    flexGrow: 1,
+    height: 230,
+    borderRadius: radii.lg,
+    overflow: 'hidden',
+    backgroundColor: colors.surfaceMuted,
+  },
+  showcaseImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: '100%',
+    height: '100%',
+  },
+  showcaseScrim: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '70%',
+  },
+  showcaseCaption: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    padding: spacing.lg,
+    gap: 2,
+  },
+  showcaseCategory: {
+    color: 'rgba(249,248,246,0.82)',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+  },
+  showcaseName: { color: colors.onPrimary },
 
   below: { width: '100%', maxWidth: contentMaxWidth, alignSelf: 'center' },
 

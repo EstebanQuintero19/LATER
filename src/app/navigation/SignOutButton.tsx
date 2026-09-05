@@ -25,7 +25,7 @@ export function SignOutButton() {
       onPress={confirm}
       hitSlop={spacing.sm}
     >
-      <Ionicons name="log-out-outline" size={24} color={colors.textSecondary} />
+      <Ionicons name="log-out-outline" size={24} color={colors.textPrimary} />
     </Pressable>
   );
 }

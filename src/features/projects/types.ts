@@ -49,6 +49,21 @@ export interface CreateRemodelRequest {
   preferredTiming: PreferredTiming;
 }
 
+/** Autor de un mensaje en el hilo de consultas de un proyecto. */
+export type MessageAuthor = 'client' | 'staff';
+
+export interface MessageDto {
+  id: string;
+  projectId: string;
+  author: MessageAuthor;
+  body: string;
+  createdAt: string;
+}
+
+export interface Message extends Omit<MessageDto, 'createdAt'> {
+  createdAt: Date;
+}
+
 export const PROJECT_STATUS_LABEL: Record<ProjectStatus, string> = {
   measuring: 'En medición',
   in_progress: 'En ejecución',

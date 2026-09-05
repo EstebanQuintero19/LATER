@@ -3,6 +3,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 
 import {
   Button,
+  Card,
   Chip,
   Input,
   Row,
@@ -106,9 +107,9 @@ export function RequestRemodelScreen({
           {strings.requestRemodel.subtitle}
         </Text>
 
-        <View style={styles.field}>
-          <Text variant="label" color="textSecondary">
-            {strings.requestRemodel.typeLabel}
+        <Card style={styles.section}>
+          <Text variant="label" color="accent">
+            1 · {strings.requestRemodel.sectionType}
           </Text>
           <Row gap="sm" wrap style={styles.chips}>
             {TYPE_OPTIONS.map((opt) => (
@@ -125,64 +126,71 @@ export function RequestRemodelScreen({
               {typeError}
             </Text>
           ) : null}
-        </View>
+        </Card>
 
-        <Input
-          label={strings.requestRemodel.clientLabel}
-          placeholder={strings.requestRemodel.clientPlaceholder}
-          value={client}
-          onChangeText={setClient}
-          onBlur={() => setTouched(true)}
-          error={clientError}
-        />
-
-        <Input
-          label={strings.requestRemodel.locationLabel}
-          placeholder={strings.requestRemodel.locationPlaceholder}
-          value={location}
-          onChangeText={setLocation}
-          onBlur={() => setTouched(true)}
-          error={locationError}
-        />
-
-        <Input
-          label={strings.requestRemodel.sizeLabel}
-          placeholder={strings.requestRemodel.sizePlaceholder}
-          value={sizeM2}
-          onChangeText={setSizeM2}
-          keyboardType="numeric"
-          inputMode="numeric"
-        />
-
-        <View style={styles.field}>
-          <Text variant="label" color="textSecondary">
-            {strings.requestRemodel.budgetLabel}
+        <Card style={styles.section}>
+          <Text variant="label" color="accent">
+            2 · {strings.requestRemodel.sectionProject}
           </Text>
-          <Row gap="sm" wrap style={styles.chips}>
-            {BUDGET_OPTIONS.map((opt) => (
-              <Chip
-                key={opt.value}
-                label={opt.label}
-                selected={budgetRange === opt.value}
-                onPress={() => setBudgetRange(opt.value)}
-              />
-            ))}
-          </Row>
-        </View>
+          <Input
+            label={strings.requestRemodel.clientLabel}
+            placeholder={strings.requestRemodel.clientPlaceholder}
+            value={client}
+            onChangeText={setClient}
+            onBlur={() => setTouched(true)}
+            error={clientError}
+          />
+          <Input
+            label={strings.requestRemodel.locationLabel}
+            placeholder={strings.requestRemodel.locationPlaceholder}
+            value={location}
+            onChangeText={setLocation}
+            onBlur={() => setTouched(true)}
+            error={locationError}
+          />
+          <Input
+            label={strings.requestRemodel.sizeLabel}
+            placeholder={strings.requestRemodel.sizePlaceholder}
+            value={sizeM2}
+            onChangeText={setSizeM2}
+            keyboardType="numeric"
+            inputMode="numeric"
+          />
+        </Card>
 
-        <Input
-          label={strings.requestRemodel.descriptionLabel}
-          placeholder={strings.requestRemodel.descriptionPlaceholder}
-          value={description}
-          onChangeText={setDescription}
-          multiline
-          numberOfLines={3}
-          style={styles.textarea}
-        />
+        <Card style={styles.section}>
+          <Text variant="label" color="accent">
+            3 · {strings.requestRemodel.sectionBudget}
+          </Text>
+          <View style={styles.field}>
+            <Text variant="label" color="textSecondary">
+              {strings.requestRemodel.budgetLabel}
+            </Text>
+            <Row gap="sm" wrap style={styles.chips}>
+              {BUDGET_OPTIONS.map((opt) => (
+                <Chip
+                  key={opt.value}
+                  label={opt.label}
+                  selected={budgetRange === opt.value}
+                  onPress={() => setBudgetRange(opt.value)}
+                />
+              ))}
+            </Row>
+          </View>
+          <Input
+            label={strings.requestRemodel.descriptionLabel}
+            placeholder={strings.requestRemodel.descriptionPlaceholder}
+            value={description}
+            onChangeText={setDescription}
+            multiline
+            numberOfLines={3}
+            style={styles.textarea}
+          />
+        </Card>
 
-        <View style={styles.field}>
-          <Text variant="label" color="textSecondary">
-            {strings.requestRemodel.timingLabel}
+        <Card style={styles.section}>
+          <Text variant="label" color="accent">
+            4 · {strings.requestRemodel.sectionTiming}
           </Text>
           <Row gap="sm" wrap style={styles.chips}>
             {TIMING_OPTIONS.map((opt) => (
@@ -194,7 +202,7 @@ export function RequestRemodelScreen({
               />
             ))}
           </Row>
-        </View>
+        </Card>
 
         {mutation.isError ? (
           <Text variant="caption" color="danger">
@@ -223,6 +231,7 @@ const styles = StyleSheet.create({
   content: { alignItems: 'center' },
   column: { width: '100%', maxWidth: contentMaxWidth, gap: spacing.lg },
   subtitle: { marginBottom: spacing.xs },
+  section: { gap: spacing.lg },
   field: { gap: spacing.sm },
   chips: { marginTop: spacing.xs },
   textarea: { minHeight: 88, textAlignVertical: 'top' },

@@ -14,6 +14,7 @@ import {
   pageGutter,
   radii,
   spacing,
+  useResponsive,
 } from '@/design-system';
 import { strings } from '@/i18n';
 import { formatCurrency } from '@/utils/format';
@@ -113,6 +114,7 @@ function CartRow({
 
 export function CartScreen() {
   const { lines, subtotal, isEmpty, setQuantity, remove, clear } = useCart();
+  const { isDesktop } = useResponsive();
 
   if (isEmpty) {
     return (
@@ -150,7 +152,7 @@ export function CartScreen() {
           data={lines}
           keyExtractor={(l) => l.productId}
           style={styles.listOuter}
-          contentContainerStyle={styles.list}
+          contentContainerStyle={[styles.list, isDesktop && styles.listDesktop]}
           renderItem={({ item }) => (
             <CartRow
               line={item}
@@ -162,7 +164,7 @@ export function CartScreen() {
       </View>
 
       <View style={styles.summary}>
-        <View style={styles.summaryInner}>
+        <View style={[styles.summaryInner, isDesktop && styles.listDesktop]}>
           <Row justify="space-between" style={styles.summaryRow}>
             <Text variant="label" color="textMuted">
               {strings.cart.subtotal}
@@ -191,6 +193,7 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.lg,
     gap: spacing.md,
   },
+  listDesktop: { paddingLeft: spacing.xxl },
   body: { flex: 1, gap: 4 },
   controls: { marginTop: spacing.sm },
   remove: {

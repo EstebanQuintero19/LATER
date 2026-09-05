@@ -45,17 +45,21 @@ export function ProductCard({
   product,
   onPress,
   style,
+  layout = 'row',
 }: {
   product: Product;
   onPress: () => void;
   style?: ViewStyle;
+  /** `column`: imagen protagonista arriba — pensado para grids de escritorio. */
+  layout?: 'row' | 'column';
 }) {
   const cart = useCart();
   const inCart = useCartQuantity(product.id);
   const available = isInStock(product);
+  const vertical = layout === 'column';
 
   return (
-    <Card style={style}>
+    <Card style={style} padded={!vertical}>
       {/* Zona de navegación al detalle (separada del botón para no anidar pulsables). */}
       <Pressable
         accessibilityRole="button"
@@ -63,35 +67,66 @@ export function ProductCard({
         onPress={onPress}
         style={({ pressed }) => pressed && styles.pressed}
       >
-        <Row align="flex-start" gap="md">
-          <Thumbnail
-            image={dummyImage(
-              product.id,
-              260,
-              260,
-              categoryImageTheme(product.category),
-            )}
-            color={product.accentColor}
-            icon={categoryIcon(product.category)}
-            size="lg"
-          />
-          <View style={styles.body}>
-            <Text variant="label" color="textMuted">
-              {product.category}
-            </Text>
-            <Text variant="subtitle" numberOfLines={2}>
-              {product.name}
-            </Text>
-            <Text variant="title" color="primaryStrong" style={styles.price}>
-              {formatCurrency(product.price, product.currency)}
-            </Text>
+        {vertical ? (
+          <View>
+            <Thumbnail
+              image={dummyImage(
+                product.id,
+                480,
+                360,
+                categoryImageTheme(product.category),
+              )}
+              color={product.accentColor}
+              icon={categoryIcon(product.category)}
+              size="hero"
+              height={160}
+            />
+            <View style={styles.bodyColumn}>
+              <Text variant="label" color="textMuted">
+                {product.category}
+              </Text>
+              <Text variant="subtitle" numberOfLines={2}>
+                {product.name}
+              </Text>
+              <Text variant="title" color="primaryStrong" style={styles.price}>
+                {formatCurrency(product.price, product.currency)}
+              </Text>
+            </View>
           </View>
-        </Row>
+        ) : (
+          <Row align="flex-start" gap="md">
+            <Thumbnail
+              image={dummyImage(
+                product.id,
+                260,
+                260,
+                categoryImageTheme(product.category),
+              )}
+              color={product.accentColor}
+              icon={categoryIcon(product.category)}
+              size="lg"
+            />
+            <View style={styles.body}>
+              <Text variant="label" color="textMuted">
+                {product.category}
+              </Text>
+              <Text variant="subtitle" numberOfLines={2}>
+                {product.name}
+              </Text>
+              <Text variant="title" color="primaryStrong" style={styles.price}>
+                {formatCurrency(product.price, product.currency)}
+              </Text>
+            </View>
+          </Row>
+        )}
       </Pressable>
 
-      <View style={styles.divider} />
+      <View style={[styles.divider, vertical && styles.dividerColumn]} />
 
-      <Row justify="space-between" style={styles.footer}>
+      <Row
+        justify="space-between"
+        style={[styles.footer, vertical && styles.footerColumn]}
+      >
         <Badge
           label={
             available ? strings.catalog.inStock : strings.catalog.outOfStock
@@ -117,11 +152,14 @@ export function ProductCard({
 const styles = StyleSheet.create({
   pressed: { opacity: 0.75 },
   body: { flex: 1, gap: 4 },
+  bodyColumn: { gap: 4, padding: spacing.lg, paddingBottom: 0 },
   price: { marginTop: 2, fontSize: 19, lineHeight: 24 },
   divider: {
     height: 1,
     backgroundColor: colors.border,
     marginVertical: spacing.md,
   },
+  dividerColumn: { marginHorizontal: spacing.lg },
   footer: {},
+  footerColumn: { padding: spacing.lg, paddingTop: 0 },
 });

@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import { colors, fonts, radii, spacing, useResponsive } from '@/design-system';
 import { strings } from '@/i18n';
 import { AppointmentsScreen } from '@/features/appointments/screens/AppointmentsScreen';
+import { ProfileScreen } from '@/features/auth/screens/ProfileScreen';
 import { CartScreen } from '@/features/cart/screens/CartScreen';
 import { CatalogStack } from '@/features/catalog/CatalogStack';
 import { NotificationsScreen } from '@/features/notifications/screens/NotificationsScreen';
@@ -12,8 +13,8 @@ import { ProjectsStack } from '@/features/projects/ProjectsStack';
 import { useCart } from '@/features/cart/hooks/useCart';
 import { useNotifications } from '@/features/notifications/hooks/useNotifications';
 
+import { HeaderActions } from './HeaderActions';
 import { tabHeaderOptions } from './screenOptions';
-import { SignOutButton } from './SignOutButton';
 import type { MainTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -26,6 +27,7 @@ const ICONS: Record<keyof MainTabParamList, IoniconName> = {
   CartTab: 'cart-outline',
   AppointmentsTab: 'calendar-outline',
   NotificationsTab: 'notifications-outline',
+  ProfileTab: 'person-circle-outline',
 };
 
 export function MainTabs() {
@@ -77,7 +79,7 @@ export function MainTabs() {
         options={{
           ...tabHeaderOptions,
           title: strings.tabs.cart,
-          headerRight: () => <SignOutButton />,
+          headerRight: () => <HeaderActions />,
           tabBarBadge: cartCount > 0 ? cartCount : undefined,
         }}
       />
@@ -87,7 +89,7 @@ export function MainTabs() {
         options={{
           ...tabHeaderOptions,
           title: strings.tabs.appointments,
-          headerRight: () => <SignOutButton />,
+          headerRight: () => <HeaderActions />,
         }}
       />
       <Tab.Screen
@@ -97,8 +99,19 @@ export function MainTabs() {
           ...tabHeaderOptions,
           title: strings.tabs.notifications,
           tabBarLabel: 'Avisos',
-          headerRight: () => <SignOutButton />,
+          headerRight: () => <HeaderActions />,
           tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
+        }}
+      />
+      <Tab.Screen
+        name="ProfileTab"
+        component={ProfileScreen}
+        options={{
+          ...tabHeaderOptions,
+          title: strings.profile.title,
+          // Sin botón en el rail/barra: sólo se llega vía el ícono de perfil
+          // de la cabecera, pero el rail sigue montado (no se pierde al navegar).
+          tabBarButton: () => null,
         }}
       />
     </Tab.Navigator>

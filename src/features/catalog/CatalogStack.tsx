@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { HeaderActions } from '@/app/navigation/HeaderActions';
 import { defaultStackScreenOptions } from '@/app/navigation/screenOptions';
-import { SignOutButton } from '@/app/navigation/SignOutButton';
 import type { CatalogStackParamList } from '@/app/navigation/types';
 import { strings } from '@/i18n';
 
@@ -18,7 +18,7 @@ export function CatalogStack() {
         component={CatalogScreen}
         options={{
           title: strings.tabs.catalog,
-          headerRight: () => <SignOutButton />,
+          headerRight: () => <HeaderActions />,
         }}
       />
       <Stack.Screen

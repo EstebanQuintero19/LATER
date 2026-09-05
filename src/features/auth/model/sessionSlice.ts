@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { authService, Credentials } from '@/services/auth/authService';
+import {
+  authService,
+  Credentials,
+  RegisterInput,
+} from '@/services/auth/authService';
 import { ApiError } from '@/services/http/errors';
 import { PersistedSession } from '@/services/storage/secureSession';
 
@@ -14,6 +18,8 @@ export interface SessionUser {
   id: string;
   name: string;
   email: string;
+  address?: string;
+  phone?: string;
 }
 
 export interface SessionState {
@@ -55,6 +61,20 @@ export const signIn = createAsyncThunk<
   } catch (error) {
     if (error instanceof ApiError) return rejectWithValue(error.message);
     return rejectWithValue('No se pudo iniciar sesión');
+  }
+});
+
+export const register = createAsyncThunk<
+  ReturnType<typeof toSessionFields>,
+  RegisterInput,
+  { rejectValue: string }
+>('session/register', async (input, { rejectWithValue }) => {
+  try {
+    const { session } = await authService.register(input);
+    return toSessionFields(session);
+  } catch (error) {
+    if (error instanceof ApiError) return rejectWithValue(error.message);
+    return rejectWithValue('No se pudo crear la cuenta');
   }
 });
 
@@ -112,6 +132,19 @@ const sessionSlice = createSlice({
       .addCase(signIn.rejected, (state, action) => {
         state.status = 'anonymous';
         state.error = action.payload ?? 'No se pudo iniciar sesión';
+      })
+      .addCase(register.pending, (state) => {
+        state.status = 'authenticating';
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.status = 'authenticated';
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accessToken;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.status = 'anonymous';
+        state.error = action.payload ?? 'No se pudo crear la cuenta';
       })
       .addCase(signOut.fulfilled, (state) => {
         state.status = 'anonymous';

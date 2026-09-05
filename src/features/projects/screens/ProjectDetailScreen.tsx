@@ -116,14 +116,24 @@ export function ProjectDetailScreen({
                 </Card>
               ) : null}
 
-              <Button
-                title={strings.projects.openCatalog}
-                variant="secondary"
-                fullWidth
-                onPress={() =>
-                  navigation.navigate('CatalogTab', { screen: 'CatalogList' })
-                }
-              />
+              <Row gap="sm">
+                <Button
+                  title={strings.projects.openCatalog}
+                  variant="secondary"
+                  style={styles.actionButton}
+                  onPress={() =>
+                    navigation.navigate('CatalogTab', { screen: 'CatalogList' })
+                  }
+                />
+                <Button
+                  title={strings.messages.title}
+                  variant="ghost"
+                  style={styles.actionButton}
+                  onPress={() =>
+                    navigation.navigate('ProjectMessages', { projectId })
+                  }
+                />
+              </Row>
             </View>
           </View>
         ) : null}
@@ -165,4 +175,5 @@ const styles = StyleSheet.create({
   row: { paddingVertical: spacing.md, paddingHorizontal: spacing.lg },
   hr: { height: 1, backgroundColor: colors.border },
   description: { marginTop: spacing.xs },
+  actionButton: { flex: 1 },
 });

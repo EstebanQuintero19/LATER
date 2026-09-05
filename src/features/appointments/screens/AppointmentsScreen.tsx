@@ -21,6 +21,7 @@ import {
   pageGutter,
   radii,
   spacing,
+  useResponsive,
 } from '@/design-system';
 import { strings } from '@/i18n';
 import { formatDateTime } from '@/utils/format';
@@ -43,6 +44,7 @@ const STATUS: Record<
 export function AppointmentsScreen() {
   const { data, isLoading, isRefetching, error, refetch } = useAppointments();
   const cancel = useCancelAppointment();
+  const { isDesktop } = useResponsive();
 
   const confirmCancel = (id: string, title: string) => {
     Alert.alert(title, strings.appointments.cancelPrompt, [
@@ -63,7 +65,10 @@ export function AppointmentsScreen() {
             data={data ?? []}
             keyExtractor={(a) => a.id}
             style={styles.listOuter}
-            contentContainerStyle={styles.list}
+            contentContainerStyle={[
+              styles.list,
+              isDesktop && styles.listDesktop,
+            ]}
             refreshControl={
               <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
             }
@@ -151,6 +156,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     flexGrow: 1,
   },
+  listDesktop: { paddingLeft: spacing.xxl },
   iconWrap: {
     width: 40,
     height: 40,

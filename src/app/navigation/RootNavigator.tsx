@@ -5,6 +5,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { colors, fonts } from '@/design-system';
 import { LoginScreen } from '@/features/auth/screens/LoginScreen';
+import { RegisterScreen } from '@/features/auth/screens/RegisterScreen';
 import { WelcomeScreen } from '@/features/auth/screens/WelcomeScreen';
 import { bootstrapSession } from '@/features/auth/model/sessionSlice';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -55,6 +56,20 @@ export function RootNavigator() {
             <Stack.Screen
               name="Login"
               component={LoginScreen}
+              options={{
+                headerShown: true,
+                headerTitle: '',
+                headerBackButtonDisplayMode: 'minimal',
+                headerShadowVisible: false,
+                headerStyle: { backgroundColor: colors.background },
+                headerTintColor: colors.textPrimary,
+                headerTitleStyle: { fontFamily: fonts.serifSemiBold },
+                contentStyle: { backgroundColor: colors.background },
+              }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={RegisterScreen}
               options={{
                 headerShown: true,
                 headerTitle: '',

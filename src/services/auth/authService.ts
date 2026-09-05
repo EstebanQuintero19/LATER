@@ -9,6 +9,14 @@ export interface Credentials {
   password: string;
 }
 
+export interface RegisterInput {
+  name: string;
+  email: string;
+  password: string;
+  address?: string;
+  phone?: string;
+}
+
 export interface AuthResult {
   session: PersistedSession;
 }
@@ -23,6 +31,8 @@ export interface AuthResult {
  */
 export interface AuthService {
   signIn(credentials: Credentials): Promise<AuthResult>;
+  /** Crea la cuenta y deja la sesión iniciada (sin pasar por Login). */
+  register(input: RegisterInput): Promise<AuthResult>;
   signOut(): Promise<void>;
   /** Restaura la sesión persistida de forma segura (o `null`). */
   restore(): Promise<PersistedSession | null>;
@@ -32,7 +42,13 @@ interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
-  user: { id: string; name: string; email: string };
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    address?: string;
+    phone?: string;
+  };
 }
 
 export class RestAuthService implements AuthService {
@@ -41,7 +57,21 @@ export class RestAuthService implements AuthService {
       method: 'POST',
       body: { email: email.trim().toLowerCase(), password },
     });
+    return this.persist(res);
+  }
 
+  async register(input: RegisterInput): Promise<AuthResult> {
+    const res = await apiRequest<LoginResponse>('/auth/register', {
+      method: 'POST',
+      body: {
+        ...input,
+        email: input.email.trim().toLowerCase(),
+      },
+    });
+    return this.persist(res);
+  }
+
+  private async persist(res: LoginResponse): Promise<AuthResult> {
     const session: PersistedSession = {
       accessToken: res.accessToken,
       refreshToken: res.refreshToken,

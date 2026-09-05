@@ -32,7 +32,7 @@ export function ProjectsScreen({
   return (
     <Screen padded={false} edges={['bottom']}>
       <View style={styles.page}>
-        <View style={styles.header}>
+        <View style={[styles.header, isDesktop && styles.headerDesktop]}>
           <Button
             title={strings.projects.newRequest}
             variant="secondary"
@@ -50,7 +50,10 @@ export function ProjectsScreen({
             keyExtractor={(p) => p.id}
             numColumns={numColumns}
             style={styles.listOuter}
-            contentContainerStyle={styles.list}
+            contentContainerStyle={[
+              styles.list,
+              isDesktop && styles.listDesktop,
+            ]}
             columnWrapperStyle={numColumns > 1 ? styles.column : undefined}
             ItemSeparatorComponent={() => null}
             refreshControl={
@@ -63,6 +66,7 @@ export function ProjectsScreen({
                 <ProjectCard
                   project={item}
                   style={numColumns > 1 ? styles.cell : undefined}
+                  layout={numColumns > 1 ? 'column' : 'row'}
                   onPress={() =>
                     navigation.navigate('ProjectDetail', {
                       projectId: item.id,
@@ -96,6 +100,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: pageGutter,
     paddingTop: spacing.md,
   },
+  headerDesktop: { paddingLeft: spacing.xxl },
   listOuter: { width: '100%', maxWidth: gridMaxWidth },
   list: {
     paddingHorizontal: pageGutter,
@@ -103,6 +108,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     flexGrow: 1,
   },
+  listDesktop: { paddingLeft: spacing.xxl },
   column: { gap: spacing.md },
   cell: { flex: 1 },
 });

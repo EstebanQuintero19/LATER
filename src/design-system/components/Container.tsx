@@ -9,7 +9,12 @@ export interface ContainerProps extends ViewProps {
  * Centra su contenido con un ancho máximo. Para pantallas anchas (web/tablet),
  * evita que listas y formularios se estiren a sangre en monitores grandes.
  */
-export function Container({ maxWidth, style, children, ...rest }: ContainerProps) {
+export function Container({
+  maxWidth,
+  style,
+  children,
+  ...rest
+}: ContainerProps) {
   return (
     <View style={[styles.base, { maxWidth }, style]} {...rest}>
       {children}

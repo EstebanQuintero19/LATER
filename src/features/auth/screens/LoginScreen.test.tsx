@@ -2,12 +2,22 @@ import { fireEvent, waitFor } from '@testing-library/react-native';
 
 import { renderWithProviders } from '@/test/renderWithProviders';
 import { strings } from '@/i18n';
+import type { RootStackScreenProps } from '@/app/navigation/types';
 
 import { LoginScreen } from './LoginScreen';
 
+// La pantalla sólo usa `navigation.navigate` (enlace a "Regístrate"); el
+// resto de la navegación no participa en estos tests.
+const navigation = {
+  navigate: jest.fn(),
+} as unknown as RootStackScreenProps<'Login'>['navigation'];
+const route = {} as RootStackScreenProps<'Login'>['route'];
+
 describe('LoginScreen', () => {
   it('valida el correo antes de permitir el envío', async () => {
-    const view = await renderWithProviders(<LoginScreen />);
+    const view = await renderWithProviders(
+      <LoginScreen navigation={navigation} route={route} />,
+    );
 
     const emailInput = view.getByLabelText(strings.auth.email);
     await fireEvent.changeText(emailInput, 'no-es-un-correo');
@@ -18,7 +28,9 @@ describe('LoginScreen', () => {
   });
 
   it('autentica con credenciales demo y actualiza la sesión', async () => {
-    const view = await renderWithProviders(<LoginScreen />);
+    const view = await renderWithProviders(
+      <LoginScreen navigation={navigation} route={route} />,
+    );
 
     await fireEvent.changeText(
       view.getByLabelText(strings.auth.email),

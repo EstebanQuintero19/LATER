@@ -56,7 +56,14 @@ export async function apiRequest<T>(
   const token = getAccessToken();
 
   if (env.useMockApi) {
-    return handleMockRequest<T>({ path, method, body, query, token });
+    try {
+      return await handleMockRequest<T>({ path, method, body, query, token });
+    } catch (error) {
+      // Mismo comportamiento que la rama real de abajo: un 401 cierra la
+      // sesión (p. ej. un token cifrado que ya no existe en el mock server).
+      if (error instanceof ApiError && error.status === 401) onUnauthorized();
+      throw error;
+    }
   }
 
   const headers: Record<string, string> = { Accept: 'application/json' };

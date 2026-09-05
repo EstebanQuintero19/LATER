@@ -20,6 +20,7 @@ import {
   pageGutter,
   radii,
   spacing,
+  useResponsive,
 } from '@/design-system';
 import { strings } from '@/i18n';
 import { formatRelative } from '@/utils/format';
@@ -43,12 +44,16 @@ export function NotificationsScreen() {
     useNotifications();
   const markRead = useMarkNotificationRead();
   const markAll = useMarkAllNotificationsRead();
+  const { isDesktop } = useResponsive();
 
   return (
     <Screen padded={false} edges={['bottom']}>
       <View style={styles.page}>
         {unreadCount > 0 && (
-          <Row justify="space-between" style={styles.header}>
+          <Row
+            justify="space-between"
+            style={[styles.header, isDesktop && styles.headerDesktop]}
+          >
             <Text variant="caption" color="textMuted">
               {unreadCount} {strings.notifications.unreadSuffix}
             </Text>
@@ -66,7 +71,10 @@ export function NotificationsScreen() {
             data={data ?? []}
             keyExtractor={(n) => n.id}
             style={styles.listOuter}
-            contentContainerStyle={styles.list}
+            contentContainerStyle={[
+              styles.list,
+              isDesktop && styles.listDesktop,
+            ]}
             refreshControl={
               <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
             }
@@ -134,12 +142,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: pageGutter,
     paddingTop: spacing.sm,
   },
+  headerDesktop: { paddingLeft: spacing.xxl },
   list: {
     paddingHorizontal: pageGutter,
     paddingVertical: spacing.lg,
     gap: spacing.md,
     flexGrow: 1,
   },
+  listDesktop: { paddingLeft: spacing.xxl },
   unread: {
     borderColor: colors.primarySoft,
     backgroundColor: colors.backgroundRaised,

@@ -1,10 +1,12 @@
 import { env } from '@/config/env';
 import { mockDb } from '@/mock/db';
-import { DEMO_PASSWORD, mockUsers, projectCoverColors } from '@/mock/fixtures';
+import { DEMO_PASSWORD, projectCoverColors } from '@/mock/fixtures';
+import type { MockUser } from '@/mock/fixtures';
 import { AppointmentDto } from '@/features/appointments/types';
 import { NotificationDto } from '@/features/notifications/types';
 import {
   CreateRemodelRequest,
+  MessageDto,
   PreferredTiming,
   ProjectDto,
   REMODEL_TYPE_LABEL,
@@ -39,7 +41,27 @@ function scheduledAtFor(timing: PreferredTiming | undefined): string {
 function userIdFromToken(token: string | null): string | null {
   if (!token?.startsWith('mock.')) return null;
   const id = token.slice('mock.'.length);
-  return mockUsers.some((u) => u.id === id) ? id : null;
+  return mockDb.users.some((u) => u.id === id) ? id : null;
+}
+
+/** Forma pública del usuario (sin `password`) que sale en login/registro. */
+function toPublicUser(user: MockUser) {
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    address: user.address,
+    phone: user.phone,
+  };
+}
+
+function sessionFor(user: MockUser) {
+  return {
+    accessToken: `mock.${user.id}`,
+    refreshToken: `mockrefresh.${user.id}`,
+    expiresIn: 3600,
+    user: toPublicUser(user),
+  };
 }
 
 function requireAuth(token: string | null): string {
@@ -69,27 +91,61 @@ export async function handleMockRequest<T>(req: MockRequest): Promise<T> {
         email?: string;
         password?: string;
       };
-      const user = mockUsers.find(
+      const user = mockDb.users.find(
         (u) => u.email.toLowerCase() === String(email).toLowerCase(),
       );
-      // Demo: cualquier email con formato válido + la contraseña demo entra
-      // como el usuario semilla; así el revisor del portafolio no necesita
-      // credenciales exactas.
+      // Cuentas registradas de verdad: su propia contraseña. Además, se
+      // conserva el atajo de demo (cualquier correo válido + la contraseña
+      // demo) para que el revisor del portafolio no necesite credenciales
+      // exactas.
       const emailLooksValid = /.+@.+\..+/.test(String(email));
-      if ((!user && !emailLooksValid) || password !== DEMO_PASSWORD) {
+      const validDemo = !user && emailLooksValid && password === DEMO_PASSWORD;
+      const validOwn = !!user && password === user.password;
+      if (!validDemo && !validOwn) {
         throw new ApiError({
           status: 401,
           code: 'invalid_credentials',
           message: 'Credenciales incorrectas',
         });
       }
-      const resolved = user ?? mockUsers[0];
-      return {
-        accessToken: `mock.${resolved.id}`,
-        refreshToken: `mockrefresh.${resolved.id}`,
-        expiresIn: 3600,
-        user: { id: resolved.id, name: resolved.name, email: resolved.email },
-      } as T;
+      const resolved = user ?? mockDb.users[0];
+      return sessionFor(resolved) as T;
+    }
+
+    case route === 'POST /auth/register': {
+      const body = (req.body ?? {}) as Partial<{
+        name: string;
+        email: string;
+        password: string;
+        address: string;
+        phone: string;
+      }>;
+      if (!body.name || !body.email || !body.password) {
+        throw new ApiError({
+          status: 422,
+          code: 'validation_error',
+          message: 'Faltan campos obligatorios del registro',
+        });
+      }
+      const email = body.email.toLowerCase();
+      if (mockDb.users.some((u) => u.email.toLowerCase() === email)) {
+        throw new ApiError({
+          status: 409,
+          code: 'email_taken',
+          message: 'Ya existe una cuenta con ese correo',
+        });
+      }
+      const user: MockUser = {
+        id: `usr_${mockDb.users.length + 1}`,
+        name: body.name,
+        email: body.email,
+        password: body.password,
+        address: body.address,
+        phone: body.phone,
+      };
+      mockDb.users = [...mockDb.users, user];
+      // Registrarse deja la sesión iniciada de una vez, sin pasar por Login.
+      return sessionFor(user) as T;
     }
 
     case route === 'POST /auth/logout': {
@@ -174,6 +230,71 @@ export async function handleMockRequest<T>(req: MockRequest): Promise<T> {
       mockDb.notifications = [notification, ...mockDb.notifications];
 
       return project as T;
+    }
+
+    // ---- Consultas ("consultar con el remodelador") ----------------------
+    case req.method === 'GET' &&
+      /^\/projects\/[^/]+\/messages$/.test(req.path): {
+      requireAuth(req.token);
+      const projectId = req.path.split('/')[2];
+      const items = mockDb.messages.filter((m) => m.projectId === projectId);
+      return { items } as T;
+    }
+
+    case req.method === 'POST' &&
+      /^\/projects\/[^/]+\/messages$/.test(req.path): {
+      requireAuth(req.token);
+      const projectId = req.path.split('/')[2];
+      const project = mockDb.projects.find((p) => p.id === projectId);
+      if (!project) {
+        throw new ApiError({
+          status: 404,
+          code: 'not_found',
+          message: 'Proyecto no encontrado',
+        });
+      }
+      const { body: text } = (req.body ?? {}) as { body?: string };
+      if (!text?.trim()) {
+        throw new ApiError({
+          status: 422,
+          code: 'validation_error',
+          message: 'El mensaje no puede estar vacío',
+        });
+      }
+
+      const now = Date.now();
+      const seq = mockDb.messages.length + 1;
+      const clientMessage: MessageDto = {
+        id: `msg_${seq}`,
+        projectId,
+        author: 'client',
+        body: text.trim(),
+        createdAt: new Date(now).toISOString(),
+      };
+      // Respuesta automática simulada: en esta demo no hay una persona real
+      // al otro lado, pero el hilo debe sentirse vivo.
+      const staffReply: MessageDto = {
+        id: `msg_${seq + 1}`,
+        projectId,
+        author: 'staff',
+        body: 'Gracias por escribir. El equipo de LATER revisará tu mensaje y te responderá pronto.',
+        createdAt: new Date(now + 1000).toISOString(),
+      };
+      mockDb.messages = [...mockDb.messages, clientMessage, staffReply];
+
+      const notification: NotificationDto = {
+        id: `ntf_msg_${mockDb.notifications.length + 1}`,
+        type: 'project',
+        title: 'Consulta enviada',
+        body: `Tu mensaje sobre "${project.name}" fue enviado al equipo.`,
+        createdAt: new Date(now).toISOString(),
+        read: false,
+      };
+      mockDb.notifications = [notification, ...mockDb.notifications];
+
+      return {
+        items: mockDb.messages.filter((m) => m.projectId === projectId),
+      } as T;
     }
 
     // ---- Catalog --------------------------------------------------------

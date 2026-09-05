@@ -9,7 +9,6 @@ import {
   Text,
   Thumbnail,
   colors,
-  fonts,
   spacing,
   webCanvasMaxWidth,
 } from '@/design-system';
@@ -20,10 +19,15 @@ import { useSession } from '../hooks/useSession';
 
 const EMAIL_RE = /.+@.+\..+/;
 
-export function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
-  const { signIn, isBusy, error, clearError } = useSession();
+export function RegisterScreen({
+  navigation,
+}: RootStackScreenProps<'Register'>) {
+  const { register, isBusy, error, clearError } = useSession();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
   const [touched, setTouched] = useState(false);
 
   useEffect(() => {
@@ -32,40 +36,55 @@ export function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
     };
   }, [clearError]);
 
+  const nameError =
+    touched && !name.trim() ? strings.register.requiredName : undefined;
   const emailError =
-    touched && !EMAIL_RE.test(email) ? strings.auth.invalidEmail : undefined;
-  const passwordError =
-    touched && password.length === 0
-      ? strings.auth.requiredPassword
+    touched && !EMAIL_RE.test(email)
+      ? strings.register.invalidEmail
       : undefined;
-  const canSubmit = EMAIL_RE.test(email) && password.length > 0 && !isBusy;
+  const passwordError =
+    touched && password.length < 4
+      ? strings.register.requiredPassword
+      : undefined;
+  const canSubmit =
+    !!name.trim() && EMAIL_RE.test(email) && password.length >= 4 && !isBusy;
 
   const onSubmit = () => {
     setTouched(true);
     if (!canSubmit) return;
-    signIn({ email, password });
+    register({
+      name: name.trim(),
+      email,
+      password,
+      address: address.trim() || undefined,
+      phone: phone.trim() || undefined,
+    });
   };
 
   return (
     <Screen scroll edges={['bottom']} contentStyle={styles.content}>
       <View style={styles.column}>
         <View style={styles.header}>
-          <Thumbnail color={colors.borderAccent} icon="home" size="lg" />
-          <View style={styles.brandLine}>
-            <Text style={styles.wordmark}>LATER</Text>
-            <View style={styles.dot} />
-          </View>
+          <Thumbnail color={colors.borderAccent} icon="person-add" size="lg" />
           <Text variant="display" style={styles.title}>
-            {strings.auth.title}
+            {strings.register.title}
           </Text>
           <Text variant="body" color="textSecondary" center>
-            {strings.auth.subtitle}
+            {strings.register.subtitle}
           </Text>
         </View>
 
         <View style={styles.form}>
           <Input
-            label={strings.auth.email}
+            label={strings.register.name}
+            value={name}
+            onChangeText={setName}
+            onBlur={() => setTouched(true)}
+            autoComplete="name"
+            error={nameError}
+          />
+          <Input
+            label={strings.register.email}
             value={email}
             onChangeText={setEmail}
             onBlur={() => setTouched(true)}
@@ -76,15 +95,28 @@ export function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
             error={emailError}
           />
           <Input
-            label={strings.auth.password}
+            label={strings.register.password}
             value={password}
             onChangeText={setPassword}
             onBlur={() => setTouched(true)}
             secureTextEntry
-            autoComplete="current-password"
+            autoComplete="new-password"
             error={passwordError}
-            onSubmitEditing={onSubmit}
-            returnKeyType="go"
+          />
+          <Input
+            label={strings.register.address}
+            placeholder={strings.register.addressPlaceholder}
+            value={address}
+            onChangeText={setAddress}
+            autoComplete="street-address"
+          />
+          <Input
+            label={strings.register.phone}
+            placeholder={strings.register.phonePlaceholder}
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="phone-pad"
+            autoComplete="tel"
           />
 
           {error ? (
@@ -94,7 +126,9 @@ export function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
           ) : null}
 
           <Button
-            title={isBusy ? strings.auth.signingIn : strings.auth.submit}
+            title={
+              isBusy ? strings.register.submitting : strings.register.submit
+            }
             onPress={onSubmit}
             loading={isBusy}
             disabled={!canSubmit}
@@ -102,20 +136,16 @@ export function LoginScreen({ navigation }: RootStackScreenProps<'Login'>) {
             size="lg"
           />
 
-          <Text variant="caption" color="textMuted" center>
-            {strings.auth.demoHint}
-          </Text>
-
           <Row justify="center" gap="xs">
             <Text variant="caption" color="textSecondary">
-              {strings.auth.noAccount}
+              {strings.auth.hasAccount}
             </Text>
             <Text
               variant="caption"
               color="accent"
-              onPress={() => navigation.navigate('Register')}
+              onPress={() => navigation.navigate('Login')}
             >
-              {strings.auth.goToRegister}
+              {strings.auth.goToLogin}
             </Text>
           </Row>
         </View>
@@ -128,25 +158,6 @@ const styles = StyleSheet.create({
   content: { flexGrow: 1, justifyContent: 'center', alignItems: 'center' },
   column: { width: '100%', maxWidth: webCanvasMaxWidth, gap: spacing.xxl },
   header: { alignItems: 'center', gap: spacing.sm },
-  brandLine: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    gap: 3,
-    marginTop: spacing.xs,
-  },
-  wordmark: {
-    fontFamily: fonts.serifBold,
-    fontSize: 26,
-    letterSpacing: -0.5,
-    color: colors.textPrimary,
-  },
-  dot: {
-    width: 7,
-    height: 7,
-    borderRadius: 4,
-    backgroundColor: colors.primary,
-    marginBottom: 6,
-  },
   title: { marginTop: spacing.sm },
   form: { gap: spacing.lg },
 });
