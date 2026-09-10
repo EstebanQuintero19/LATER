@@ -33,5 +33,5 @@ export const env: AppEnv = {
         ? false
         : true,
   mockLatencyMs:
-    typeof extra.mockLatencyMs === 'number' ? extra.mockLatencyMs : 350,
+    typeof extra.mockLatencyMs === 'number' ? extra.mockLatencyMs : 150,
 };

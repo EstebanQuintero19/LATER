@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image, StyleSheet, View } from 'react-native';
 
@@ -87,7 +87,7 @@ export function Thumbnail({
       ) : label ? (
         <Text
           style={{
-            fontFamily: fonts.serifSemiBold,
+            fontFamily: fonts.bold,
             fontSize: dim.font,
             color: 'rgba(38,34,30,0.55)',
           }}

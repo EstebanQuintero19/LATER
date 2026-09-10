@@ -1,121 +1,109 @@
+import { Platform } from 'react-native';
+
 /**
  * Tokens del sistema de diseño.
  *
  * Punto único de verdad para color, espaciado, tipografía y radios.
  * Las pantallas y componentes NO deben usar valores mágicos: siempre `theme.*`.
  *
- * Estética "interiorismo / arquitectura": lienzo lino, superficies porcelana,
- * un único acento camello y tinta espresso. Tono sobre tono, sin tarjeta blanca
- * sobre gris; titulares en serif (Fraunces), interfaz en Manrope, esquinas
- * poco redondeadas.
+ * Concepto: **el muestrario**. LATER no es una tienda ni una landing: es la
+ * ventana del cliente a su propia obra. El referente es el banco oscuro sobre
+ * el que el reformista deja las muestras de cuarzo, roble y acero para que se
+ * vean juntas. De ahí salen las dos decisiones de fondo:
+ *
+ * - El *chrome* (rail y topbar) es grafito. Convierte la app en instrumento de
+ *   trabajo en vez de página de marketing, y hace de banco: la fotografía de
+ *   materiales resalta contra él como resaltan las muestras reales.
+ * - El acento es verdigris (pátina de cobre, material del oficio). Es el
+ *   complemento de las maderas y piedras cálidas de las fotos, así que las
+ *   favorece en lugar de competir con ellas.
+ *
+ * Todos los pares de color están verificados contra WCAG AA para texto normal.
  */
 
 const palette = {
-  // Paleta base (4 neutros cálidos dados) + derivados imprescindibles.
-  porcelain: '#F9F8F6', // el más claro
-  linen: '#EFE9E3', // lienzo de página
-  clay: '#D9CFC7', // separadores / bordes
-  camel: '#C9B59C', // acento (único color)
+  // Chrome: rail lateral y topbar.
+  graphite: '#1C1B19',
+  graphiteRaised: '#26241F',
+  graphiteBorder: '#38352F',
 
-  // Derivados de la paleta (mismas familias, distinta luminosidad).
-  linenDeep: '#E6DED5',
-  camelDeep: '#A8895E', // acento legible como texto (~4.5:1 sobre porcelana)
-  camelTint: '#E4D9C9',
+  // Lienzo y superficies.
+  paper: '#FCFCFA', // superficies de contenido
+  bench: '#E8E6E1', // lienzo de página
+  benchDeep: '#DEDBD4', // superficie hundida / separadores fuertes
+  edge: '#D2CEC5', // bordes
 
-  // Tinta espresso cálida (la paleta no aporta oscuros).
-  espresso: '#26221E',
-  espressoSoft: '#5F564C',
-  espressoMuted: '#938779',
-  white: '#FFFFFF',
+  // Acento único: pátina de cobre.
+  verdigris: '#3F6F63',
+  verdigrisDeep: '#2F544B',
+  verdigrisSoft: '#DCE6E2',
+  verdigrisOnChrome: '#8FB5A9', // legible sobre grafito (7.7:1)
 
-  // Semánticos terrosos, desaturados para convivir con los neutros.
-  moss: '#5B7355',
-  mossSoft: '#E1E5D8',
-  amber: '#A9803B',
-  amberSoft: '#EFE3CC',
-  amberInk: '#6E5322',
-  brick: '#9B4A3B',
-  brickSoft: '#ECD9D2',
+  // Tinta.
+  ink: '#24231F',
+  inkSoft: '#5A574F',
+  inkMuted: '#6B675E',
+  onChrome: '#F2F0EC',
+  onChromeMuted: '#9C978C',
+
+  // Semánticos, desaturados para convivir con los neutros.
+  moss: '#4A6B45',
+  mossSoft: '#DFE7DB',
+  amber: '#7A5718',
+  amberSoft: '#F2E6CE',
+  oxide: '#A8452C',
+  oxideSoft: '#F0DED8',
 } as const;
 
 export const colors = {
-  background: palette.linen,
-  backgroundRaised: '#F3EEE9',
-  surface: palette.porcelain,
-  surfaceMuted: palette.linenDeep,
-  border: palette.clay,
-  borderAccent: palette.camel,
+  background: palette.bench,
+  backgroundRaised: palette.benchDeep,
+  surface: palette.paper,
+  surfaceMuted: palette.benchDeep,
+  border: palette.edge,
+  borderAccent: palette.verdigris,
 
-  primary: palette.espresso,
-  primaryStrong: palette.espresso,
-  primarySoft: palette.camelTint,
-  onPrimary: palette.porcelain,
+  primary: palette.graphite,
+  primaryStrong: palette.ink,
+  primarySoft: palette.verdigrisSoft,
+  onPrimary: palette.paper,
 
-  accent: palette.camelDeep,
-  accentSoft: palette.camelTint,
+  accent: palette.verdigris,
+  accentStrong: palette.verdigrisDeep,
+  accentSoft: palette.verdigrisSoft,
 
-  textPrimary: palette.espresso,
-  textSecondary: palette.espressoSoft,
-  textMuted: palette.espressoMuted,
+  textPrimary: palette.ink,
+  textSecondary: palette.inkSoft,
+  textMuted: palette.inkMuted,
+
+  // Chrome oscuro (rail lateral, topbar).
+  chrome: palette.graphite,
+  chromeRaised: palette.graphiteRaised,
+  chromeBorder: palette.graphiteBorder,
+  onChrome: palette.onChrome,
+  onChromeMuted: palette.onChromeMuted,
+  accentOnChrome: palette.verdigrisOnChrome,
 
   success: palette.moss,
   successSoft: palette.mossSoft,
   warning: palette.amber,
   warningSoft: palette.amberSoft,
-  warningInk: palette.amberInk,
-  danger: palette.brick,
-  dangerSoft: palette.brickSoft,
+  warningInk: palette.amber,
+  danger: palette.oxide,
+  dangerSoft: palette.oxideSoft,
 
-  focusRing: palette.camel,
+  focusRing: palette.verdigris,
 } as const;
 
 /** Tintes tonales para fallbacks decorativos (cuando no hay imagen). */
 export const swatches = [
-  '#C9B59C',
-  '#D9CFC7',
-  '#B8A78E',
-  '#A8895E',
+  '#3F6F63',
+  '#5A574F',
   '#8C7A67',
+  '#2F544B',
   '#6F6353',
+  '#A8452C',
 ] as const;
-
-/**
- * Temas de imagen: cada uno resuelve a fotografía real y afín al rubro
- * (interiorismo/reforma), no a una foto aleatoria sin relación con el contenido.
- */
-export const imageThemes = {
-  hero: 'interior,livingroom',
-  interior: 'interior,architecture',
-  renovation: 'renovation,construction',
-  surfaces: 'marble,stone',
-  fixtures: 'faucet,bathroom',
-  furniture: 'furniture,interior',
-  lighting: 'lamp,lighting',
-} as const;
-
-export type ImageTheme = keyof typeof imageThemes;
-
-function hashSeed(seed: string): number {
-  let hash = 0;
-  for (let i = 0; i < seed.length; i += 1) {
-    hash = (hash * 31 + seed.charCodeAt(i)) >>> 0;
-  }
-  return hash % 10000;
-}
-
-/**
- * URL de imagen estable (misma semilla -> misma foto) y temática según el
- * rubro, en blanco y negro para convivir con el velo camello de `Thumbnail`.
- */
-export function dummyImage(
-  seed: string,
-  width: number,
-  height: number,
-  theme: ImageTheme = 'interior',
-): string {
-  const lock = hashSeed(seed);
-  return `https://loremflickr.com/g/${width}/${height}/${imageThemes[theme]}?lock=${lock}`;
-}
 
 export const spacing = {
   xs: 4,
@@ -133,94 +121,160 @@ export const pageGutter = spacing.xl;
 /**
  * Puntos de corte para layout responsivo (ancho de ventana, en dp/px CSS).
  * `tablet` activa layouts de 2 columnas; `desktop` activa el chrome de
- * escritorio (rail lateral, grids de 3+ columnas, detalle a 2 columnas).
+ * escritorio (rail lateral, grids de 3 columnas, detalle a 2 columnas);
+ * `wide` sube a 4 columnas y ensancha la caja de contenido.
  */
 export const breakpoints = {
   tablet: 768,
   desktop: 1024,
+  wide: 1440,
 } as const;
 
 /** Ancho máximo de columnas de lectura/formulario (login, detalle, avisos). */
 export const contentMaxWidth = 760;
 
-/** Ancho máximo de las pantallas de grid (catálogo, proyectos, carrito). */
+/**
+ * Ancho máximo de las pantallas de grid, por tramo. Un único valor fijo dejaba
+ * ~65% del lienzo vacío en monitores anchos.
+ */
 export const gridMaxWidth = 1180;
+export const gridMaxWidthWide = 1440;
 
 /** Ancho del formulario de auth (login) en pantallas anchas. */
 export const webCanvasMaxWidth = 420;
 
+/**
+ * Radios. Codifican jerarquía, no decoran: cuanto más grande y más "pieza
+ * física" es el elemento, más radio. Un mismo radio en todo era uno de los
+ * tics del diseño anterior.
+ */
 export const radii = {
-  sm: 4,
-  md: 8,
-  lg: 12,
-  xl: 18,
+  none: 0,
+  xs: 2, // badges, chips: casi rectos
+  sm: 4, // controles: botones, inputs
+  md: 8, // tarjetas
+  lg: 14, // superficies grandes: media, paneles
+  xl: 20,
   pill: 999,
 } as const;
 
 /**
- * Familias tipográficas (nombres cargados en `App.tsx` con `useFonts`).
+ * Familia tipográfica: **Archivo**, una sola, en cuatro pesos.
+ *
+ * Archivo nació como tipo de señalética y editorial de alto rendimiento — el
+ * registro de la ficha técnica, que es el del oficio. Una sola familia con
+ * rango completo de pesos da más cohesión que dos grotescas parecidas, y baja
+ * el presupuesto de fuentes de 7 caras a 4.
+ *
  * Con fuentes personalizadas NO se usa `fontWeight`: cada peso es una familia.
+ *
+ * En web el render NO espera a las fuentes (ver `App.tsx`), así que cada familia
+ * lleva detrás una pila de respaldo del sistema: el primer frame se pinta
+ * legible y el texto cambia a la fuente real al llegar. En nativo sólo vale el
+ * nombre.
  */
+const SANS_FALLBACK =
+  'system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
+
+function family(name: string): string {
+  return Platform.OS === 'web' ? `${name}, ${SANS_FALLBACK}` : name;
+}
+
 export const fonts = {
-  serifMedium: 'Fraunces_500Medium',
-  serifSemiBold: 'Fraunces_600SemiBold',
-  serifBold: 'Fraunces_700Bold',
-  sansRegular: 'Manrope_400Regular',
-  sansMedium: 'Manrope_500Medium',
-  sansSemiBold: 'Manrope_600SemiBold',
-  sansBold: 'Manrope_700Bold',
+  regular: family('Archivo_400Regular'),
+  medium: family('Archivo_500Medium'),
+  bold: family('Archivo_700Bold'),
+  black: family('Archivo_900Black'),
 } as const;
 
+/**
+ * Escala tipográfica base (móvil).
+ *
+ * Sin `textTransform: 'uppercase'` en ningún nivel: la jerarquía la llevan el
+ * peso y el tamaño. El eyebrow en versalitas con tracking encima de cada bloque
+ * era el tic más visible del diseño anterior.
+ *
+ * El tracking negativo crece con el tamaño: es lo que da a los titulares el
+ * aire ancho y compacto de la señalética, ya que Archivo no trae anchos
+ * Expanded en `@expo-google-fonts`.
+ */
 export const typography = {
   hero: {
-    fontFamily: fonts.serifBold,
+    fontFamily: fonts.black,
     fontSize: 40,
-    lineHeight: 44,
-    letterSpacing: -1.2,
+    lineHeight: 42,
+    letterSpacing: -1.4,
   },
   display: {
-    fontFamily: fonts.serifBold,
+    fontFamily: fonts.black,
     fontSize: 28,
-    lineHeight: 34,
-    letterSpacing: -0.6,
+    lineHeight: 32,
+    letterSpacing: -0.9,
   },
   title: {
-    fontFamily: fonts.serifSemiBold,
-    fontSize: 23,
-    lineHeight: 29,
-    letterSpacing: -0.3,
+    fontFamily: fonts.bold,
+    fontSize: 21,
+    lineHeight: 26,
+    letterSpacing: -0.5,
   },
   subtitle: {
-    fontFamily: fonts.serifMedium,
-    fontSize: 17,
-    lineHeight: 23,
+    fontFamily: fonts.medium,
+    fontSize: 16,
+    lineHeight: 22,
     letterSpacing: -0.2,
   },
   body: {
-    fontFamily: fonts.sansRegular,
+    fontFamily: fonts.regular,
     fontSize: 15,
     lineHeight: 23,
   },
   bodyStrong: {
-    fontFamily: fonts.sansSemiBold,
+    fontFamily: fonts.medium,
     fontSize: 15,
     lineHeight: 22,
   },
+  /** Etiqueta de dato. Caja alta y baja, peso alto, sin tracking postizo. */
   label: {
-    fontFamily: fonts.sansSemiBold,
-    fontSize: 12,
-    lineHeight: 16,
-    letterSpacing: 1.4,
-    textTransform: 'uppercase' as const,
+    fontFamily: fonts.medium,
+    fontSize: 13,
+    lineHeight: 17,
   },
   caption: {
-    fontFamily: fonts.sansMedium,
-    fontSize: 12,
-    lineHeight: 16,
+    fontFamily: fonts.regular,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  /** Cifras y medidas: el dato que el cliente busca de un vistazo. */
+  metric: {
+    fontFamily: fonts.bold,
+    fontSize: 19,
+    lineHeight: 24,
+    letterSpacing: -0.4,
   },
 } as const;
 
 export type TypographyVariant = keyof typeof typography;
+
+export interface TypographyOverride {
+  fontSize: number;
+  lineHeight: number;
+  letterSpacing?: number;
+}
+
+/**
+ * Sobrescrituras para escritorio (>= `breakpoints.desktop`). Antes `hero` medía
+ * 40 px igual en un móvil que en un monitor de 27". Sólo suben los niveles
+ * expresivos: el texto de lectura se queda donde está.
+ */
+export const typographyDesktop: Partial<
+  Record<TypographyVariant, TypographyOverride>
+> = {
+  hero: { fontSize: 68, lineHeight: 66, letterSpacing: -2.8 },
+  display: { fontSize: 40, lineHeight: 44, letterSpacing: -1.4 },
+  title: { fontSize: 25, lineHeight: 30, letterSpacing: -0.7 },
+  subtitle: { fontSize: 17, lineHeight: 24, letterSpacing: -0.2 },
+  metric: { fontSize: 22, lineHeight: 27, letterSpacing: -0.5 },
+};
 
 export const theme = { colors, spacing, radii, typography, fonts } as const;
 export type Theme = typeof theme;

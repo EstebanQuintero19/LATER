@@ -37,15 +37,13 @@ const toneFg: Record<Tone, string> = {
 const styles = StyleSheet.create({
   badge: {
     alignSelf: 'flex-start',
-    borderRadius: radii.sm,
+    borderRadius: radii.xs,
     paddingHorizontal: spacing.sm,
     paddingVertical: 3,
   },
   text: {
-    fontFamily: fonts.sansSemiBold,
-    fontSize: 11,
-    lineHeight: 15,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
+    fontFamily: fonts.medium,
+    fontSize: 12,
+    lineHeight: 16,
   },
 });

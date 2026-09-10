@@ -32,7 +32,7 @@
     "extra": {
       "apiBaseUrl": "https://api.later.example",
       "useMockApi": true,
-      "mockLatencyMs": 350
+      "mockLatencyMs": 150
     }
   }
 }

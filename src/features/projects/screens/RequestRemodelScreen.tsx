@@ -109,7 +109,7 @@ export function RequestRemodelScreen({
 
         <Card style={styles.section}>
           <Text variant="label" color="accent">
-            1 · {strings.requestRemodel.sectionType}
+            1. {strings.requestRemodel.sectionType}
           </Text>
           <Row gap="sm" wrap style={styles.chips}>
             {TYPE_OPTIONS.map((opt) => (
@@ -130,7 +130,7 @@ export function RequestRemodelScreen({
 
         <Card style={styles.section}>
           <Text variant="label" color="accent">
-            2 · {strings.requestRemodel.sectionProject}
+            2. {strings.requestRemodel.sectionProject}
           </Text>
           <Input
             label={strings.requestRemodel.clientLabel}
@@ -160,7 +160,7 @@ export function RequestRemodelScreen({
 
         <Card style={styles.section}>
           <Text variant="label" color="accent">
-            3 · {strings.requestRemodel.sectionBudget}
+            3. {strings.requestRemodel.sectionBudget}
           </Text>
           <View style={styles.field}>
             <Text variant="label" color="textSecondary">
@@ -190,7 +190,7 @@ export function RequestRemodelScreen({
 
         <Card style={styles.section}>
           <Text variant="label" color="accent">
-            4 · {strings.requestRemodel.sectionTiming}
+            4. {strings.requestRemodel.sectionTiming}
           </Text>
           <Row gap="sm" wrap style={styles.chips}>
             {TIMING_OPTIONS.map((opt) => (

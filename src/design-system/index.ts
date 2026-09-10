@@ -15,16 +15,22 @@ export {
   breakpoints,
   colors,
   contentMaxWidth,
-  dummyImage,
   fonts,
   gridMaxWidth,
-  imageThemes,
+  gridMaxWidthWide,
   pageGutter,
   radii,
   spacing,
   swatches,
   theme,
   typography,
+  typographyDesktop,
   webCanvasMaxWidth,
 } from './tokens';
-export type { ImageTheme, Theme, TypographyVariant } from './tokens';
+export type {
+  Theme,
+  TypographyOverride,
+  TypographyVariant,
+} from './tokens';
+export { dummyImage, imageThemes } from './imagery';
+export type { ImageTheme } from './imagery';

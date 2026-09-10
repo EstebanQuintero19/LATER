@@ -5,17 +5,23 @@ import { colors, radii, spacing } from '../tokens';
 export interface CardProps extends ViewProps {
   onPress?: () => void;
   padded?: boolean;
+  /** Filete de acento superior. Reservado a lo que de verdad destaca. */
+  accent?: boolean;
 }
 
 export function Card({
   onPress,
   padded = true,
+  accent = false,
   style,
   children,
   ...rest
 }: CardProps) {
   const content = (
-    <View style={[styles.card, padded && styles.padded, style]} {...rest}>
+    <View
+      style={[styles.card, accent && styles.accent, padded && styles.padded, style]}
+      {...rest}
+    >
       {children}
     </View>
   );
@@ -41,10 +47,11 @@ const styles = StyleSheet.create({
     borderRadius: radii.md,
     borderWidth: 1,
     borderColor: colors.border,
-    // Sin sombra: superficie plana, tono sobre tono, con filete de acento arriba.
-    borderTopWidth: 2,
-    borderTopColor: colors.borderAccent,
+    // Superficie plana, tono sobre tono. El filete de acento se pide con
+    // `accent`: cuando lo llevaban todas las tarjetas por igual dejaba de
+    // señalar nada y sólo añadía ruido.
   },
+  accent: { borderTopWidth: 2, borderTopColor: colors.borderAccent },
   padded: { padding: spacing.lg },
   pressed: { opacity: 0.96, transform: [{ scale: 0.992 }] },
 });

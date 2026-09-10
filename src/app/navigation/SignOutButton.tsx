@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Alert, Pressable } from 'react-native';
 
 import { colors, spacing } from '@/design-system';

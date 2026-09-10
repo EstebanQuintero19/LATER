@@ -63,7 +63,7 @@ export function RootNavigator() {
                 headerShadowVisible: false,
                 headerStyle: { backgroundColor: colors.background },
                 headerTintColor: colors.textPrimary,
-                headerTitleStyle: { fontFamily: fonts.serifSemiBold },
+                headerTitleStyle: { fontFamily: fonts.bold },
                 contentStyle: { backgroundColor: colors.background },
               }}
             />
@@ -77,7 +77,7 @@ export function RootNavigator() {
                 headerShadowVisible: false,
                 headerStyle: { backgroundColor: colors.background },
                 headerTintColor: colors.textPrimary,
-                headerTitleStyle: { fontFamily: fonts.serifSemiBold },
+                headerTitleStyle: { fontFamily: fonts.bold },
                 contentStyle: { backgroundColor: colors.background },
               }}
             />

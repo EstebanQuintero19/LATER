@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   fullWidth: { alignSelf: 'stretch' },
   content: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   label: {
-    fontFamily: fonts.sansSemiBold,
+    fontFamily: fonts.medium,
     fontSize: 15,
     lineHeight: 20,
     letterSpacing: 0.2,

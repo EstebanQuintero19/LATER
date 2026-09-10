@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     marginTop: spacing.xs,
   },
   wordmark: {
-    fontFamily: fonts.serifBold,
+    fontFamily: fonts.black,
     fontSize: 26,
     letterSpacing: -0.5,
     color: colors.textPrimary,

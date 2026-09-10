@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Pressable, StyleSheet, View, ViewStyle } from 'react-native';
 
 import {
@@ -136,7 +136,7 @@ export function ProductCard({
         <Button
           title={
             inCart > 0
-              ? `${strings.catalog.added} · ${inCart}`
+              ? `${strings.catalog.added} (${inCart})`
               : strings.catalog.addToCart
           }
           size="md"

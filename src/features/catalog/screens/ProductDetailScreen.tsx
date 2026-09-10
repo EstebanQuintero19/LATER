@@ -66,7 +66,7 @@ export function ProductDetailScreen({
                 <Badge
                   label={
                     isInStock(product)
-                      ? `${strings.catalog.inStock} · ${product.stock}`
+                      ? `${strings.catalog.inStock} (${product.stock})`
                       : strings.catalog.outOfStock
                   }
                   tone={isInStock(product) ? 'success' : 'danger'}
@@ -76,7 +76,7 @@ export function ProductDetailScreen({
               <Button
                 title={
                   inCart > 0
-                    ? `${strings.catalog.added} · ${inCart}`
+                    ? `${strings.catalog.added} (${inCart})`
                     : strings.catalog.addToCart
                 }
                 variant={inCart > 0 ? 'secondary' : 'primary'}

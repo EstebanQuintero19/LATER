@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
   },
   bottomLabel: {
-    fontFamily: fonts.sansSemiBold,
+    fontFamily: fonts.medium,
     fontSize: 11,
     letterSpacing: 0.2,
   },
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.sm,
   },
   sidebarLabel: {
-    fontFamily: fonts.sansSemiBold,
+    fontFamily: fonts.medium,
     fontSize: 14,
     letterSpacing: 0.1,
   },

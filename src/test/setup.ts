@@ -23,6 +23,17 @@ jest.mock('expo-constants', () => ({
 }));
 
 // Los iconos y el degradado no aportan nada a los tests de lógica/interacción.
+// Se mockea la subruta concreta: la app importa `@expo/vector-icons/Ionicons`
+// para no arrastrar los otros 19 sets de iconos al bundle.
+jest.mock('@expo/vector-icons/Ionicons', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  const Icon = (props: Record<string, unknown>) =>
+    React.createElement(View, props);
+  Icon.glyphMap = new Proxy({}, { get: () => 'icon' });
+  return { __esModule: true, default: Icon };
+});
+
 jest.mock('@expo/vector-icons', () => {
   const React = require('react');
   const { View } = require('react-native');

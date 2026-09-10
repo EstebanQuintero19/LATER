@@ -44,8 +44,10 @@ export function ProjectCard({
         tone={STATUS_TONE[project.status]}
       />
       <Text variant="caption" color="textMuted" style={styles.metaText}>
-        {project.memberCount} {strings.projects.members} ·{' '}
         {formatRelative(project.updatedAt)}
+      </Text>
+      <Text variant="caption" color="textMuted">
+        {project.memberCount} {strings.projects.members}
       </Text>
     </View>
   );

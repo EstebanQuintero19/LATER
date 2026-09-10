@@ -4,7 +4,7 @@ import { colors, fonts } from '@/design-system';
 
 /** Título de cabecera con más presencia: serif, un punto más grande. */
 const headerTitleStyle = {
-  fontFamily: fonts.serifBold,
+  fontFamily: fonts.black,
   fontSize: 21,
   letterSpacing: -0.3,
 };

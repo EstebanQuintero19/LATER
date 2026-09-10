@@ -1,4 +1,4 @@
-import { Ionicons } from '@expo/vector-icons';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Image, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
   },
   brand: { alignSelf: 'flex-start' },
   wordmark: {
-    fontFamily: fonts.serifBold,
+    fontFamily: fonts.black,
     fontSize: 22,
     letterSpacing: -0.4,
     color: colors.onPrimary,
@@ -282,21 +282,19 @@ const styles = StyleSheet.create({
   taglineRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   taglineRule: { width: 28, height: 2, backgroundColor: colors.borderAccent },
   tagline: {
-    fontFamily: fonts.sansSemiBold,
-    fontSize: 12,
-    letterSpacing: 1.4,
-    textTransform: 'uppercase',
-    color: 'rgba(249,248,246,0.82)',
+    fontFamily: fonts.medium,
+    fontSize: 14,
+    color: 'rgba(242,240,236,0.86)',
   },
   headline: {
-    fontFamily: fonts.serifBold,
+    fontFamily: fonts.black,
     fontSize: 38,
     lineHeight: 42,
     letterSpacing: -1.1,
     color: colors.onPrimary,
   },
   subhead: {
-    fontFamily: fonts.sansRegular,
+    fontFamily: fonts.regular,
     fontSize: 15,
     lineHeight: 22,
     color: 'rgba(249,248,246,0.88)',
@@ -350,11 +348,7 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     gap: 2,
   },
-  showcaseCategory: {
-    color: 'rgba(249,248,246,0.82)',
-    textTransform: 'uppercase',
-    letterSpacing: 1,
-  },
+  showcaseCategory: { color: 'rgba(242,240,236,0.86)' },
   showcaseName: { color: colors.onPrimary },
 
   below: { width: '100%', maxWidth: contentMaxWidth, alignSelf: 'center' },
